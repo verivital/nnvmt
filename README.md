@@ -1,4 +1,4 @@
-# NeuralNetworkToolParsers
+# Neural Network Tool Parsers
 
 This repository contains parsers for creating input files in the format ofthe various neural network verification tools available in the research community. It also contains scripts for translating neural network models into .mat files that store  the network weight matrices and biases for each layer sequentially.
 
