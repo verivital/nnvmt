@@ -17,10 +17,10 @@ from matplotlib import pyplot as plt
 import scipy.io as sio
 
 # load the names of the structure and weights of NN
-modelfile = 'plant.json' 
-weightsfile = 'plant.h5'
-savefile = 'plant.mat' #name of the mat file to save
-nn = 'plant' # name of the network when loaded into matlab
+modelfile = 'MNISTmodel.json' 
+weightsfile = 'MNISTmodel.h5'
+savefile = 'MNISTmodel.mat' #name of the mat file to save
+nn = 'mnist_model' # name of the network when loaded into matlab
 
 # Load the plant with parameters included
 def load_files(modelfile,weightsfile):
@@ -28,17 +28,17 @@ def load_files(modelfile,weightsfile):
         model = model_from_json(jfile.read())
     model.load_weights(weightsfile)
     return model
-model = load_files(modelfile,weightsfile)
+#model = load_files(modelfile,weightsfile)
 
 #Load the size of the plant
 def get_shape(model):
-    nl = len(model.layers) # number of all defined layers in keras
+    nl = np.int64(len(model.layers)) # number of all defined layers in keras
     ni = model.get_input_shape_at(0)
-    ni = ni[1]
+    ni = np.int64(ni[1])
     no = model.get_output_shape_at(0)
-    no = no[1]
+    no = np.int64(no[1])
     return nl,ni,no
-[nl,ni,no] = get_shape(model)
+#[nl,ni,no] = get_shape(model)
 
 def get_layers(model,nl):
     config = model.get_config()
@@ -62,7 +62,7 @@ def get_layers(model,nl):
             if 'activation' in l[i]['config']:
                 lfs.append(l[i]['config']['activation'])
     return(lys,lfs)
-[lys,lfs] = get_layers(model,nl)   
+#[lys,lfs] = get_layers(model,nl)   
     
 # Load the size of individual layers and total neurons
 def get_neurons(model,nl):
@@ -73,16 +73,16 @@ def get_neurons(model,nl):
         for i in range(0,nl):
             if 'units' in l[i]['config']:
                 lsize.append(l[i]['config']['units']) # size of each layer
-                n = sum(lsize) #total number of neurons in NN
+                n = np.int64(sum(lsize)) #total number of neurons in NN
     elif type(config)==list:
         lsize=[]
         for i in range(0,nl):
             if 'units' in config[i]['config']:
                 lsize.append(config[i]['config']['units'])
-                n = sum(lsize)
-    nls = len(lsize) #true number of layers 
+                n = np.int64(sum(lsize))
+    nls = np.int64(len(lsize)) #true number of layers 
     return lsize,n,nls
-[lsize,n,nls] = get_neurons(model,nl)
+#[lsize,n,nls] = get_neurons(model,nl)
 
 # Load the weights and biases
 #def get_w_and_b(model,nls):
@@ -110,14 +110,14 @@ def get_parameters(model,nl,nls):
             b.append(0)
             i = i+1
         elif lys[i]=='Dense':
-            W.append(w[2*j])
-            b.append(w[2*j+1])
+            W.append(np.float64(w[2*j].T))
+            b.append(np.float64(w[2*j+1].T))
             j = j+1
             i = i+1
         else:
             i = i+1 
     return W,b
-[W,b] = get_parameters(model,nl,nls)
+#[W,b] = get_parameters(model,nl,nls)
     
 # Save the nn information in a mat file
 def save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs):
