@@ -63,6 +63,6 @@ def create_sherlock_file(source_dir,sourcefile, destination, filename):
 
 #example way to parse matfile into sherlock format    
 PATH="/home/musaup/Documents/Research/Examples"
-sourcefile='1L_abalone_nets_ready.mat'
-DEST='/home/musaup/Documents/Research/Examples'    
-create_sherlock_file(PATH,sourcefile,DEST,'1L_abalone_nets_ready')
+sourcefile='2L_housing_nets_ready.mat'
+DEST='/home/musaup/Documents/Research/sherlock/network_files'    
+create_sherlock_file(PATH,sourcefile,DEST,'2L_housing_nets')
