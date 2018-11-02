@@ -4,6 +4,12 @@ This repository contains parsers for creating input files in the format ofthe va
 
 
 ## Installing Neural Network Tool Parsers
+Make sure you have the following packages installed:
+  - Numpy 
+  - Scipy
+  - Depending on which format you wish to use install:
+    - Tensorflow
+    - Keras
 Linux
 - make sure you have installed TkInter: https://wiki.python.org/moin/TkInter
   - if you have anaconda run:
