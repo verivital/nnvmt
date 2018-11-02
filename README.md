@@ -7,7 +7,7 @@ This repository contains parsers for creating input files in the format ofthe va
 Linux
 - make sure you have installed TkInter: https://wiki.python.org/moin/TkInter
   - if you have anaconda run:
-    -conda install -c anaconda tk 
+    - conda install -c anaconda tk 
 ## Parsers available for neural networks created in the following libraries:
 - Tensorflow 
 - Keras
