@@ -16,17 +16,18 @@ class reluplexPrinter(NeuralNetParser.NeuralNetParser):
     
     
     def __init__(self,pathToOriginalFile, OutputFilePath):
-        filename=originalFilename=os.path.basename(os.path.normpath(pathToOriginalFile))
+        filename=os.path.basename(os.path.normpath(pathToOriginalFile))
         filename=filename.replace('.nnet','')
         self.originalFilename=filename
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
-        print(self.outputFilePath)
         self.create_matfile()
         
     def load_model(self):
+        #TO DO IMPLEMENT THIS
         print("hello")
     def  create_onnx_model(self):
+        #TO DO IMPLEMENT THIS
         print("work in progress")
 
     def create_matfile(self):
@@ -40,6 +41,7 @@ class reluplexPrinter(NeuralNetParser.NeuralNetParser):
         adict1["layer_sizes"]=layer_sizes
         path=os.path.join(self.outputFilePath,self.originalFilename+".mat")
         sio.savemat(path,adict1)
+        self.originalFile.close()
         print("Done")
     
     

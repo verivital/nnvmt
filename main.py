@@ -7,6 +7,7 @@ Created on Thu Nov  1 19:45:28 2018
 """
 
 from src import reluPlexPrinter
+from src import sherlockPrinter
 import tkinter as tk
 import os
 from tkinter import filedialog
@@ -16,7 +17,7 @@ def main():
     root = tk.Tk()
     root.withdraw()
     root.update()
-    file_path = filedialog.askopenfilename(title="Select network model file",filetypes = (("nnet files","*.nnet"),("all files","*.*")))
+    file_path = filedialog.askopenfilename(title="Select network model file",filetypes = (("nnet files","*.txt"),("all files","*.*")))
     root.update() 
     #print(file_path)
     
@@ -26,7 +27,8 @@ def main():
     #print(outputdirectory)
     root.destroy()
     
-    reluPlexPrinter.reluplexPrinter(file_path,outputdirectory)
+    #reluPlexPrinter.reluplexPrinter(file_path,outputdirectory)
+    sherlockPrinter.sherlockPrinter(file_path,outputdirectory)
 
     
 
