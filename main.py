@@ -6,29 +6,15 @@ Created on Thu Nov  1 19:45:28 2018
 @author: Musau
 """
 
-from src import reluPlexPrinter
-from src import sherlockPrinter
 import tkinter as tk
-import os
-from tkinter import filedialog
-
+from src import ToolGUI
 
 def main():
-    root = tk.Tk()
-    root.withdraw()
-    root.update()
-    file_path = filedialog.askopenfilename(title="Select network model file",filetypes = (("nnet files","*.txt"),("all files","*.*")))
-    root.update() 
-    #print(file_path)
+    #root window created. Here that would be the only window but you can later have windows within windows
+    root=tk.Tk()
+    ToolGUI.Window(root)
+    root.mainloop()
     
-    initDir=os.path.basename(os.path.normpath(file_path))
-    outputdirectory=filedialog.askdirectory(initialdir=initDir,title="Select Output Directory")
-    root.update()
-    #print(outputdirectory)
-    root.destroy()
-    
-    #reluPlexPrinter.reluplexPrinter(file_path,outputdirectory)
-    sherlockPrinter.sherlockPrinter(file_path,outputdirectory)
 
     
 

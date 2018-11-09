@@ -9,10 +9,10 @@ Created on Thu Nov  1 19:55:05 2018
 from __future__ import division, print_function, unicode_literals
 import numpy as np
 import os
-from src import NeuralNetParser
+from src.NeuralNetParser import NeuralNetParser
 import scipy.io as sio
 
-class reluplexPrinter(NeuralNetParser.NeuralNetParser):
+class reluplexPrinter(NeuralNetParser):
     
     
     def __init__(self,pathToOriginalFile, OutputFilePath):

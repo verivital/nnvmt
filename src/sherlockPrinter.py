@@ -9,10 +9,10 @@ Created on Fri Nov  2 13:50:54 2018
 from __future__ import division, print_function, unicode_literals
 import numpy as np
 import os
-from src import NeuralNetParser
+from src.NeuralNetParser import NeuralNetParser
 import scipy.io as sio
 
-class sherlockPrinter(NeuralNetParser.NeuralNetParser):
+class sherlockPrinter(NeuralNetParser):
     
     def __init__(self,pathToOriginalFile, OutputFilePath):
         filename=os.path.basename(os.path.normpath(pathToOriginalFile))
