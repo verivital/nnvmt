@@ -41,8 +41,8 @@ class sherlockPrinter(NeuralNetParser):
             record=open(self.pathToOriginalFile,"r")
             info_dict=self.get_network_info(record)
             nn_mat=self.create_nn_matrices(info_dict,record)
-        nn_dict=self.create_matfile_matrix_dict(nn_mat)
-        self.save_mat_file(nn_dict,info_dict,self.outputFilePath,self.originalFilename)
+        network_weight_matrices, network_bias_matrices=self.create_matfile_matrix_dict(nn_mat)
+        self.save_mat_file(info_dict,network_weight_matrices,network_bias_matrices,self.outputFilePath, self.originalFilename)
         
     def get_network_info(self, record):
         #check to see if the file is structures correctly
@@ -128,23 +128,25 @@ class sherlockPrinter(NeuralNetParser):
         return NN_matrix
     
     def create_matfile_matrix_dict(self, NN_matrix):
-        adict={}
         numberOfLayers=len(NN_matrix)
-        layerName="layer_"
-        layerName1="_weight_matrix"
-        biasName="_bias"
+        network_weight_matrices=np.zeros((numberOfLayers,), dtype=np.object)
+        network_bias_matrices=np.zeros((numberOfLayers,), dtype=np.object)
         for layer in range(0,numberOfLayers):
-            layerKey=layerName+str(layer+1)+layerName1
-            biasKey=layerName+str(layer+1)+biasName
-            adict[layerKey]=NN_matrix[layer][0]
-            adict[biasKey]=NN_matrix[layer][1]
-        return adict
+            network_weight_matrices[layer]=NN_matrix[layer][0]
+            network_bias_matrices[layer]=NN_matrix[layer][1]
+        return network_weight_matrices, network_bias_matrices
 
-    def save_mat_file(self, NN_matrix_dict,info_dict,directory_name,file_name):
+    def save_mat_file(self,info_dict,network_weight_matrices,network_bias_matrices,directory_name,file_name):
+        NN_matrix_dict={}
+        import scipy.io as sio
+        import os
         for item in info_dict:
             NN_matrix_dict[item]=info_dict[item]
+        NN_matrix_dict['W']=network_weight_matrices
+        NN_matrix_dict['b']=network_bias_matrices
         path=os.path.join(directory_name,file_name+".mat")
         sio.savemat(path,NN_matrix_dict)
+        return NN_matrix_dict
         
     
     def decide_which_file_type(self, record):
