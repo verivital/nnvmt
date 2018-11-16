@@ -6,7 +6,7 @@ Created on Fri Nov  2 13:50:54 2018
 @author: musaup
 """
 
-from __future__ import division, print_function, unicode_literals
+from __future__ import division, print_function, unicode_literals, absolute_import
 import numpy as np
 import os
 from src.NeuralNetParser import NeuralNetParser

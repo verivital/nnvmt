@@ -45,6 +45,7 @@ def create_nn_matrices(info_dict,record):
     layerSizes=[numberOfInputs]
     for item in range(0,numberOfLayers):
         layerSizes.append(numberOfNeurons)
+    layerSizes.append(numberOfOutputs)
     #create layer and weight matrix structure
     info_dict['layer_sizes']=layerSizes
     NN_matrix=[0]*(numberOfLayers+1)
