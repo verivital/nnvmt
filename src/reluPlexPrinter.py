@@ -11,6 +11,7 @@ import numpy as np
 import os
 from src.NeuralNetParser import NeuralNetParser
 import scipy.io as sio
+from onnx import *
 
 class reluplexPrinter(NeuralNetParser):
     
@@ -27,24 +28,81 @@ class reluplexPrinter(NeuralNetParser):
         #TO DO IMPLEMENT THIS
         print("hello")
     def  create_onnx_model(self):
-        #TO DO IMPLEMENT THIS
-        print("work in progress")
+        model_def=self.createReluplexOnnx(self.network_weight_matrices,self.network_bias_matrices,self.layer_sizes)
+        new_model_path = os.path.join( self.outputFilePath, self.originalFilename)
+        onnx.save(model_def, new_model_path+".onnx")
+        
+    def saveMatfile(self):
+        path=os.path.join(self.outputFilePath,self.originalFilename+".mat")
+        sio.savemat(path,self.matDict)
+        
 
     def create_matfile(self):
         record=self.originalFile
         first_line=self.skip_comments(record)
-        line,numberOfLayers,layer_sizes, sizeOfLargestLayer, MIN, MAX, mean, range1,symmetric=self.process_network_information(first_line,record)
-        NN_matrix=self.create_nn_matrix(numberOfLayers,layer_sizes)
-        NN_matrix=self.fill_NN_matrix(NN_matrix,record,numberOfLayers,layer_sizes)
-        adict=self.create_matdict(NN_matrix,numberOfLayers)
+        line,numberOfLayers,self.layer_sizes, sizeOfLargestLayer, MIN, MAX, mean, range1,symmetric=self.process_network_information(first_line,record)
+        NN_matrix=self.create_nn_matrix(numberOfLayers,self.layer_sizes)
+        NN_matrix=self.fill_NN_matrix(NN_matrix,record,numberOfLayers,self.layer_sizes)
+        adict,self.network_weight_matrices, self.network_bias_matrices=self.create_matdict(NN_matrix,numberOfLayers)
         adict1=self.create_nn_info_dict(adict,numberOfLayers, sizeOfLargestLayer, MIN, MAX, mean, range1,symmetric)
-        adict1["layer_sizes"]=layer_sizes
-        path=os.path.join(self.outputFilePath,self.originalFilename+".mat")
-        sio.savemat(path,adict1)
-        self.originalFile.close()
-        print("Done")
+        adict1["layer_sizes"]=self.layer_sizes
+        self.matDict=adict1
+        
+        
+        
+    def createWeightBiasLabels(self,W):
+        weightNames=[]
+        biasNames=[]
+        weightPrefix="W"
+        biasPrefix="B"
+        for i in range(0,len(W)):
+            weightNames.append(weightPrefix+str((i+1)))
+            biasNames.append(biasPrefix+str((i+1)))
+        return weightNames, biasNames
     
-    
+    def createReluplexOnnx(self,W,b,layerSizes):
+        num_layers=len(W)
+        layer_name="FC"
+        input_name="X"
+        inputSize=layerSizes[0]
+        outputSize=layerSizes[len(W)]
+        output_name="Y"
+        reluOutput="R"
+        output1="O"
+        reluOperation="ReLU"
+        weightLabels, biasLabels=self.createWeightBiasLabels(W)
+        nodeList=[]
+        tensorList=[]
+        if(int(inputSize)==1):
+             tensorList.append(helper.make_tensor_value_info(input_name, TensorProto.FLOAT, [1]))
+        else:
+            tensorList.append(helper.make_tensor_value_info(input_name, TensorProto.FLOAT, [int(inputSize),1]))
+        if(outputSize==1):
+            outputList=[helper.make_tensor_value_info(output_name, TensorProto.FLOAT, [int(outputSize),1])]
+        else:
+            outputList=[helper.make_tensor_value_info(output_name, TensorProto.FLOAT, [1])]
+        for i in range(0,num_layers):
+            nodeList.append(helper.make_node(layer_name, [input_name, weightLabels[i], biasLabels[i]], [output1+str(i+1)]))
+            input_name=output1+str(i+1)
+            if(i==num_layers-1):
+                continue
+            else:
+                nodeList.append(helper.make_node(reluOperation, [input_name], [reluOutput+str(i+1)]))
+            input_name=reluOutput+str(i+1)
+        for i in range(0,num_layers):
+            weightMatrix=W[i]
+            biasMatrix=b[i]
+            if(weightMatrix.shape[0]==1 and weightMatrix.shape[1]==1):
+                tensorList.append(helper.make_tensor_value_info(weightLabels[i], TensorProto.FLOAT, [1]))
+            else:
+                tensorList.append(helper.make_tensor_value_info(weightLabels[i], TensorProto.FLOAT, [weightMatrix.shape[0],weightMatrix.shape[1]]))
+            if(biasMatrix.shape[0]==1 and biasMatrix.shape[1]==1):
+                tensorList.append(helper.make_tensor_value_info(biasLabels[i], TensorProto.FLOAT, [1]))
+            else:
+                tensorList.append(helper.make_tensor_value_info(biasLabels[i], TensorProto.FLOAT, [biasMatrix.shape[0],biasMatrix.shape[1]]))
+        graph=helper.make_graph(nodeList,"MLP",tensorList,outputList)
+        model_def = helper.make_model(graph, producer_name='Reluplex->Onnx')
+        return model_def
 
     #define helper functions for this class
     #function that skips all of the comments in the file
@@ -124,7 +182,7 @@ class reluplexPrinter(NeuralNetParser):
             biasdictionary.append(NN_matrix[layer][1])
         dictionary["W"]=weightsdictionary
         dictionary["b"]=biasdictionary
-        return dictionary
+        return dictionary,np.asarray(weightsdictionary),np.asarray(biasdictionary)
 
     #create dictionary that stores the basic information of the network so that it can be stored as a mat file
     def create_nn_info_dict(self, dictionary,numberOfLayers, sizeOfLargestLayer, MIN, MAX, mean, range1,symmetric):

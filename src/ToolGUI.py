@@ -26,7 +26,7 @@ class Window(tk.Frame):
         #reference to the master widget which is the tk window
         self.master=master
         #size of the window
-        self.master.geometry("400x300")
+        self.master.geometry("500x300")
         #With that we want then to run init_windo which doesn't yet exist
         self.init_window()
         
@@ -55,7 +55,7 @@ class Window(tk.Frame):
         self.comboModelSelect.bind("<<ComboboxSelected>>",self.edit_Selectable_Files)
         
         #create output Combo Box
-        self.comboOutput=ttk.Combobox(self, values=["Select an output format...","Matfile (.mat)", "Onnx (under dev)"])
+        self.comboOutput=ttk.Combobox(self, values=["Select an output format...","Matfile (.mat)", "Onnx (.onnx)"])
         self.comboOutput.grid(column=0,row=4)
         self.comboOutput.current(0)
         
@@ -93,7 +93,7 @@ class Window(tk.Frame):
         if(self.comboModelSelect.get()=="Select a model format..."):
             messagebox.showerror("Error","Please select a model format type")
         else:
-            filePath=filedialog.askopenfilename(initialdir=str(Path.home()),title="Select network model file",filetypes = ((self.filePickerName,self.filePickerFormat),("all files","*.*")))
+            filePath=filedialog.askopenfilename(initialdir=str(Path.home()),title="Select network model file",filetypes = ((self.filePickerName,self.filePickerFormat),("All files",self.AllFiles)))
             if(filePath):
                 self.modelFileEntryDefaultString.set(filePath)
                 self.initial_dir=os.path.basename(os.path.normpath(filePath))
@@ -116,23 +116,31 @@ class Window(tk.Frame):
             file_path=self.modelFileEntry.get()
             outputdirectory=self.modelOutputPath.get()
             if(modelFormat=="Reluplex (.nnet)" and fileOutputFormat=="Matfile (.mat)"):
-                reluplexPrinter(file_path,outputdirectory)
+                printer=reluplexPrinter(file_path,outputdirectory)
+                printer.saveMatfile()
                 self.master.destroy()
-            elif(modelFormat=="Reluplex (.nnet)" and fileOutputFormat=="Onnx (under dev)"):
-                messagebox.showwarning("Under Development","That format is still under development")
+            elif(modelFormat=="Reluplex (.nnet)" and fileOutputFormat=="Onnx (.onnx)"):
+                printer=reluplexPrinter(file_path,outputdirectory)
+                printer.create_onnx_model()
+                self.master.destroy()
             elif(modelFormat=="Sherlock (.txt)" and fileOutputFormat=="Matfile (.mat)"):
-                sherlockPrinter(file_path,outputdirectory)
+                printer=sherlockPrinter(file_path,outputdirectory)
+                printer.save_mat_file()
                 self.master.destroy()
-            elif(modelFormat=="Sherlock (.txt)" and fileOutputFormat=="Onnx (under dev)"):
-                messagebox.showwarning("Under Development","That format is still under development")
-                
+            elif(modelFormat=="Sherlock (.txt)" and fileOutputFormat=="Onnx (.onnx)"):
+                printer=sherlockPrinter(file_path,outputdirectory)
+                printer.create_onnx_model()
+                self.master.destroy()
     def edit_Selectable_Files(self,event):
         if(self.comboModelSelect.get()=="Reluplex (.nnet)"):
             self.filePickerFormat="*.nnet"
             self.filePickerName="nnet files"
+            self.AllFiles="*.*"
         elif(self.comboModelSelect.get()=="Sherlock (.txt)"):
             self.filePickerFormat="*.txt"
             self.filePickerName="Plain Text Files"
+            self.AllFiles="*"
+            
         
 
 

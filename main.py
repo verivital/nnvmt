@@ -15,7 +15,4 @@ def main():
     ToolGUI.Window(root)
     root.mainloop()
     
-
-    
-
 main()
