@@ -19,7 +19,7 @@ Make sure you have the following packages installed:
 - Reluplex
 - Sherlock
 ## NNMT Usage 
-NNMT has been tested on MacOS Mojave
+NNMT has been tested on MacOS Mojave Version 10.14
 #### GUI 
 NNMT can be run through a GUI. To use the GUI, after installing the above libraries simply run `main.py`
 #### Command Line Usage
