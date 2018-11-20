@@ -1,4 +1,4 @@
-# Neural Network Tool Parsers
+# Neural Network Model Translation  (NNMT)
 
 This repository contains an implementation of a translation tool for neural network models into the [Open Neural Network Exchange format](https://github.com/onnx) developped by Facebook and Microsoft. The tool is also able to parse feedforward neural network models so that the weights and biases can be exported into the Microsoft Access Table (.mat) format.  
 
@@ -9,9 +9,8 @@ for creating input files in the format of the various neural network verificatio
 Make sure you have the following packages installed:
   - Numpy 
   - Scipy
-  - Depending on which format you wish to use install:
-    - Tensorflow
-    - Keras
+  - Keras
+  - [ONNX]()
 ### Linux
 - make sure you have installed TkInter: https://wiki.python.org/moin/TkInter
   - if you have anaconda run:
@@ -21,6 +20,10 @@ Make sure you have the following packages installed:
 ## Verification Tools Currently Supported
 - Reluplex
 - Sherlock
+## NNMT Usage 
+NNMT has been tested on MacOS Mojave
+### GUI 
+NNMT can be run through a GUI. To use the GUI, after installing the above libraries simply run `main.py`
 ## Translating into other model formats
 To convert into the formats of other tools such as [Caffe2](https://caffe2.ai/docs/getting-started.html?platform=mac&configuration=prebuilt) [PyTorch] [Matlab](https://www.mathworks.com/matlabcentral/fileexchange/67296-deep-learning-toolbox-converter-for-onnx-model-format) or [several others](http://onnx.ai/getting-started) use the ONNX converter which can be found [here](https://github.com/onnx/tutorials)
 ## Contact
