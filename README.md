@@ -10,9 +10,10 @@ Make sure you have the following packages installed:
   - Numpy 
   - Scipy
   - Keras
-  - [ONNX]()
+  - ONNX
+     - Instructions can be found [here](https://github.com/onnx/onnx)
 ### Linux
-- make sure you have installed TkInter: https://wiki.python.org/moin/TkInter
+- make sure you have installed [TkInter](https://wiki.python.org/moin/TkInter)
   - if you have anaconda run:
         ```conda install -c anaconda tk```
 ## Parsers available for neural networks created in the following libraries:
