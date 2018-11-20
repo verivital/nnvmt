@@ -26,6 +26,11 @@ NNMT can be run through a GUI. To use the GUI, after installing the above librar
 Under development
 #### Translating into other model formats
 To convert into the formats of other tools such as [Caffe2](https://caffe2.ai/docs/getting-started.html?platform=mac&configuration=prebuilt) [PyTorch] [Matlab](https://www.mathworks.com/matlabcentral/fileexchange/67296-deep-learning-toolbox-converter-for-onnx-model-format) or [several others](http://onnx.ai/getting-started) use the ONNX converter which can be found [here](https://github.com/onnx/tutorials)
+
+## Repository Organization
+- src: contains the code for translating the models
+- examples: contains several input format types that one can use to test out the tool
+- ONNX: a collection of neural network models stored in the ONNX format
 ## Contact
 For questions please contact 
 1. Patrick Musau: patrick.musau@vanderbilt.edu
