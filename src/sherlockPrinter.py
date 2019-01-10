@@ -46,8 +46,8 @@ class sherlockPrinter(NeuralNetParser):
 
     def create_matfile(self):
         record=self.originalFile
-        file_type=self.decide_which_file_type(record)
-        if(file_type):
+        self.file_type=self.decide_which_file_type(record)
+        if(self.file_type):
             record=open(self.pathToOriginalFile,"r")
             info_dict=self.get_network_info(record)
             nn_mat=self.create_nn_matrices_gen(info_dict,record)
@@ -64,7 +64,10 @@ class sherlockPrinter(NeuralNetParser):
         layer_name="FC"
         input_name="X"
         inputSize=layerSizes[0]
-        outputSize=layerSizes[len(W)]
+        if(self.file_type):
+            outputSize=layerSizes[len(W)]
+        else:
+            outputSize=layerSizes[len(W)-1]
         output_name="Y"
         reluOutput="R"
         output1="O"

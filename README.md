@@ -2,6 +2,8 @@
 
 This repository contains an implementation of a translation tool for neural network models into the [Open Neural Network Exchange format](https://github.com/onnx) developped by Facebook and Microsoft. The tool is also able to neural network models so that the weights and biases can be exported into the Microsoft Access Table (.mat) format. We are also working on implementing printing from the ONNX format into the various input formats of the formal sverification software tools available within the research literature. 
 
+The tool is written is Python 3. If you are using a virtual enviromnment please make sure you are using Python 3
+
 ## Installing the translator
 Make sure you have the following packages installed:
   - Numpy 

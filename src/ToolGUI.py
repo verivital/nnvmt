@@ -125,7 +125,7 @@ class Window(tk.Frame):
                 self.master.destroy()
             elif(modelFormat=="Sherlock (.txt)" and fileOutputFormat=="Matfile (.mat)"):
                 printer=sherlockPrinter(file_path,outputdirectory)
-                printer.save_mat_file()
+                printer.saveMatfile()
                 self.master.destroy()
             elif(modelFormat=="Sherlock (.txt)" and fileOutputFormat=="Onnx (.onnx)"):
                 printer=sherlockPrinter(file_path,outputdirectory)
