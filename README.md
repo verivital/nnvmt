@@ -10,7 +10,7 @@ Make sure you have the following packages installed:
   - ONNX
      - Instructions can be found [here](https://github.com/onnx/onnx)
   - Pathlib
-     -'''conda install -c menpo pathlib ''' 
+     -```conda install -c menpo pathlib``` 
 ### Linux
 - make sure you have installed [TkInter](https://wiki.python.org/moin/TkInter)
   - if you have anaconda run:
