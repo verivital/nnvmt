@@ -55,6 +55,7 @@ To convert into the formats of other tools such as [Caffe2](https://caffe2.ai/do
 ## Repository Organization
 - src: contains the code for translating the models
 - examples: contains several input format types that one can use to test out the tool
+- testing: contains example model files from the verification tools that you can use the tool to translate. Eventually this will contain unit tests :)
 - ONNX: a collection of neural network models stored in the ONNX format
 ## Contact
 For questions please contact 
