@@ -10,6 +10,7 @@ import numpy as np
 import json
 from pprint import pprint
 import keras
+from keras import models
 from keras.models import load_model
 from keras.models import model_from_json
 from scipy.io import loadmat
@@ -134,6 +135,15 @@ def parse_nn(modelfile,weightsfile):
     [lsize,n,nls] = get_neurons(model,nl)
     [W,b] = get_parameters(model,nl,nls)
     save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
+    
+def parse_nn_wout_json(modelfile):
+    model = models.load_model(modelfile)
+    [nl,ni,no] = get_shape(model)
+    [lys,lfs] = get_layers(model,nl)
+    [lsize,n,nls] = get_neurons(model,nl)
+    [W,b] = get_parameters(model,nl,nls)
+    save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
         
 parse_nn(modelfile,weightsfile)
+#parse_nn_wout_json(modelfile)
 
