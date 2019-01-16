@@ -1,4 +1,4 @@
-o#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Fri Nov  2 13:50:54 2018
@@ -15,7 +15,7 @@ import scipy.io as sio
 
 class sherlockPrinter(NeuralNetParser):
     
-    def __init__(self,pathToOriginalFile, OutputFilePath):
+    def __init__(self,pathToOriginalFile, OutputFilePath,*vals):
         filename=os.path.basename(os.path.normpath(pathToOriginalFile))
         filename=filename.replace('.txt','')
         self.originalFilename=filename

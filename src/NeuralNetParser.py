@@ -11,7 +11,7 @@ from abc import ABC, abstractmethod
 class NeuralNetParser(ABC):
     
     @abstractmethod
-    def __init__(self,pathToOriginalFile, OutputFilePath):
+    def __init__(self,pathToOriginalFile, OutputFilePath,*vals):
         pass
     @abstractmethod
     def load_model(self):

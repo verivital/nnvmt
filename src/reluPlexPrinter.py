@@ -16,7 +16,7 @@ from onnx import *
 class reluplexPrinter(NeuralNetParser):
     
     
-    def __init__(self,pathToOriginalFile, OutputFilePath):
+    def __init__(self,pathToOriginalFile, OutputFilePath,*vals):
         filename=os.path.basename(os.path.normpath(pathToOriginalFile))
         filename=filename.replace('.nnet','')
         self.originalFilename=filename
