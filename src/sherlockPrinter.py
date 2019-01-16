@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+o#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Fri Nov  2 13:50:54 2018
@@ -150,7 +150,7 @@ class sherlockPrinter(NeuralNetParser):
             NN_matrix[layers][1]=np.zeros((layerSizes[layers+1],1))
         #create tthe output layer matrix 
         NN_matrix[numberOfLayers]=[0]*2
-        NN_matrix[numberOfLayers][0]=np.zeros((numberOfNeurons,numberOfOutputs))
+        NN_matrix[numberOfLayers][0]=np.zeros((numberOfOutputs,numberOfNeurons))
         NN_matrix[numberOfLayers][1]=np.zeros((numberOfOutputs,1))
     
         #fill the NN_matrix
