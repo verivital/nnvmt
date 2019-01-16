@@ -7,23 +7,23 @@ The tool is written is Python 3. If you are using a virtual enviromnment please 
 ## Installing the translator
 Make sure you have the following packages installed:
   - Numpy
-     -```conda install -c anaconda numpy```
+      - ```conda install -c anaconda numpy```
   - Scipy
-     -```conda install -c anaconda scipy```
+      - ```conda install -c anaconda scipy```
   - Keras
-     - ```conda install -c anaconda keras``` 
+      - ```conda install -c anaconda keras``` 
   - ONNX
      - Instructions can be found [here](https://github.com/onnx/onnx)
   - h5py
      - ```conda install -c anaconda h5py```
   - Pathlib
-     -```conda install -c menpo pathlib``` 
+     - ```conda install -c menpo pathlib``` 
 ### Linux
 - make sure you have installed [TkInter](https://wiki.python.org/moin/TkInter)
   - if you have anaconda run:
         ```conda install -c anaconda tk```
 ## Parsers available for neural networks created in the following libraries:
-- Keras
+- [Keras](https://keras.io/)
 ## Verification Tools Currently Supported
 - [Reluplex](https://github.com/guykatzz/ReluplexCav2017)
 - [Sherlock](https://github.com/souradeep-111/sherlock)
