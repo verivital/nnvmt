@@ -14,9 +14,6 @@ class NeuralNetParser(ABC):
     def __init__(self,pathToOriginalFile, OutputFilePath,*vals):
         pass
     @abstractmethod
-    def load_model(self):
-        pass
-    @abstractmethod
     def create_matfile(self):
         pass
     def create_onnx_model(self):

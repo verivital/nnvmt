@@ -20,24 +20,34 @@ import keras
 from keras import models
 from keras.models import load_model
 from keras.models import model_from_json
-from matplotlib import pyplot as plt
 
 #abstract class for keras printers
 class kerasPrinter(NeuralNetParser):
-    
     #Instantiate files and create a matfile
     def __init__(self,pathToOriginalFile, OutputFilePath, *vals):
+        #get the name of the file without the end extension
+        filename=os.path.basename(os.path.normpath(pathToOriginalFile))
+        filename=filename.replace('.h5','')
+        #save the filename and path to file as a class variable
+        self.originalFilename=filename
+        self.pathToOriginalFile=pathToOriginalFile
+        self.originalFile=open(pathToOriginalFile,"r")
+        self.outputFilePath=OutputFilePath
+        #if a weight file was not specified use the first style parser 
+        #otherwise use the second style of parser
         if not vals:
+            self.parse_nn_wout_json(self.pathToOriginalFile)
+        else:
+            self.jsonFile=vals[0]
+            self.parse_nn(self.jsonFile,self.pathToOriginalFile)
             
-        pass
-    def load_model(self):
-        pass
+
     #function for creating the matfile
     def create_matfile(self):
         pass
     #function for creating an onnx model
     def create_onnx_model(self):
-        pass
+        print("Sorry this is still under development")
     
     # Load the plant with parameters included
     def load_files(self, modelfile,weightsfile):
@@ -114,7 +124,7 @@ class kerasPrinter(NeuralNetParser):
     #[W,b] = get_w_and_b(model,nls)
     
     def get_parameters(self, model,nl,nls):
-        [lys,lfs] = get_layers(model,nl)
+        [lys,lfs] = self.get_layers(model,nl)
         w = model.get_weights()
         W = [] #matrix of weights
         b = [] #matrix of biases
@@ -137,25 +147,24 @@ class kerasPrinter(NeuralNetParser):
     #[W,b] = get_parameters(model,nl,nls)
         
     # Save the nn information in a mat file
-    def save_nnmat_file(self, model,ni,no,nls,n,lsize,W,b,lys,lfs):
+    def save_nnmat_file(self,model,ni,no,nls,n,lsize,W,b,lys,lfs):
         nn1 = dict({'number_of_inputs':ni,'number_of_outputs':no ,'number_of_layers':nls,
                     'number_of_neurons':n,'layer_sizes':lsize,'W':W,'b':b,'types_of_layers':lys,'activation_fcns':lfs})
-        sio.savemat(savefile, mdict={nn:nn1})
-    #save_nnmat_file(model)
+        sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"), nn1)
     
     # parse the nn imported from keras as json and h5 files
     def parse_nn(self, modelfile,weightsfile):
-        model = load_files(modelfile,weightsfile)
-        [nl,ni,no] = get_shape(model)
-        [lys,lfs] = get_layers(model,nl)
-        [lsize,n,nls] = get_neurons(model,nl)
-        [W,b] = get_parameters(model,nl,nls)
-        save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
+        model = self.load_files(modelfile,weightsfile)
+        [nl,ni,no] = self.get_shape(model)
+        [lys,lfs] = self.get_layers(model,nl)
+        [lsize,n,nls] = self.get_neurons(model,nl)
+        [W,b] = self.get_parameters(model,nl,nls)
+        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
         
     def parse_nn_wout_json(self, modelfile):
         model = models.load_model(modelfile)
-        [nl,ni,no] = get_shape(model)
-        [lys,lfs] = get_layers(model,nl)
-        [lsize,n,nls] = get_neurons(model,nl)
-        [W,b] = get_parameters(model,nl,nls)
-        save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
+        [nl,ni,no] = self.get_shape(model)
+        [lys,lfs] = self.get_layers(model,nl)
+        [lsize,n,nls] = self.get_neurons(model,nl)
+        [W,b] = self.get_parameters(model,nl,nls)
+        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)

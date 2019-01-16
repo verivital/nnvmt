@@ -24,9 +24,6 @@ class reluplexPrinter(NeuralNetParser):
         self.outputFilePath=OutputFilePath
         self.create_matfile()
         
-    def load_model(self):
-        #TO DO IMPLEMENT THIS
-        print("hello")
     def  create_onnx_model(self):
         model_def=self.createReluplexOnnx(self.network_weight_matrices,self.network_bias_matrices,self.layer_sizes)
         new_model_path = os.path.join( self.outputFilePath, self.originalFilename)

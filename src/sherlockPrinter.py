@@ -25,11 +25,7 @@ class sherlockPrinter(NeuralNetParser):
         self.network_weight_matrices, self.network_bias_matrices,self.info_dict=self.create_matfile()
         self.originalFile.close()
         
-        
-    def load_model(self):
-        #TO DO IMPLEMENT THIS
-        print("hello")
-        
+
     #function to save the matfiles with the network weights
     def saveMatfile(self):
         self.save_mat_file(self.info_dict,self.network_weight_matrices,self.network_bias_matrices,self.outputFilePath, self.originalFilename)
@@ -38,7 +34,7 @@ class sherlockPrinter(NeuralNetParser):
     def  create_onnx_model(self):
         #TO DO IMPLEMENT THIS
         model_def=self.createSherlockOnnx(self.network_weight_matrices,self.network_bias_matrices,self.info_dict['layer_sizes'])
-        new_model_path = os.path.join( self.outputFilePath, self.originalFilename)
+        new_model_path = os.path.join(self.outputFilePath, self.originalFilename)
         onnx.save(model_def, new_model_path+".onnx")
         
         
