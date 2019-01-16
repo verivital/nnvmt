@@ -2,15 +2,20 @@
 
 This repository contains an implementation of a translation tool for neural network models into the [Open Neural Network Exchange format](https://github.com/onnx) developped by Facebook and Microsoft. The tool is also able to neural network models so that the weights and biases can be exported into the Microsoft Access Table (.mat) format. We are also working on implementing printing from the ONNX format into the various input formats of the formal sverification software tools available within the research literature. 
 
-The tool is written is Python 3. If you are using a virtual enviromnment please make sure you are using Python 3
+The tool is written is Python 3. If you are using a virtual enviromnment please make sure you are using Python 3. We highly recommend the use of [Anaconda](https://www.anaconda.com/download/)
 
 ## Installing the translator
 Make sure you have the following packages installed:
-  - Numpy 
+  - Numpy
+     -```conda install -c anaconda numpy```
   - Scipy
+     -```conda install -c anaconda scipy```
   - Keras
+     - ```conda install -c anaconda keras``` 
   - ONNX
      - Instructions can be found [here](https://github.com/onnx/onnx)
+  - h5py
+     - ```conda install -c anaconda h5py```
   - Pathlib
      -```conda install -c menpo pathlib``` 
 ### Linux
@@ -20,8 +25,8 @@ Make sure you have the following packages installed:
 ## Parsers available for neural networks created in the following libraries:
 - Keras
 ## Verification Tools Currently Supported
-- Reluplex
-- Sherlock
+- [Reluplex](https://github.com/guykatzz/ReluplexCav2017)
+- [Sherlock](https://github.com/souradeep-111/sherlock)
 ## NNMT Usage 
 NNMT has been tested on MacOS Mojave Version 10.14
 #### GUI 
@@ -30,9 +35,9 @@ NNMT can be run through a GUI. To use the GUI, after installing the above librar
 After installing the above libraries, you can run the transalator python files --help or (-h) flag to see the high-level usage:
 
 ``` 
-python nnmt.py -h
+python nnvmt.py -h
 
-usage: nnmt.py [-h] -i INPUT -o OUTPUT -t TOOL [-f OUTPUTFORMAT]
+usage: nnvmt.py [-h] -i INPUT -o OUTPUT -t TOOL [-f OUTPUTFORMAT]
 
 Neural Network Model Translation Tool
 
