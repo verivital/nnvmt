@@ -115,6 +115,8 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
             print("Error: Unrecognized Keras format. Expected .json file")
     elif(toolName=="Keras" and outputFormat=="onnx"):
         print("Sorry still developping this")
+    else:
+        print(toolName,outputFormat)
         
     
 
@@ -133,7 +135,7 @@ def parseArguments(arguments):
         outputFormat=decideOutput(outputFileType)
     #if both names exist then parse the files using the correct printers
     if(toolName and outputFormat):
-        parseHandler(inputFileType,outputFileType,inputPath,outputPath,jsonFile)
+        parseHandler(toolName,outputFormat,inputPath,outputPath,jsonFile)
         
     
     

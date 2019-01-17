@@ -157,10 +157,8 @@ class sherlockPrinter(NeuralNetParser):
                 for index2 in range(0,weight_matrix_shape[1]):
                     line=record.readline().strip("\n")
                     NN_matrix[layer][0][index][index2]=float(line)
-            for index3 in range(0,bias_matrix_shape[0]):
-                for index4 in range(0,bias_matrix_shape[1]):
-                    line=record.readline().strip("\n")
-                    NN_matrix[layer][1][index3][index4]=float(line)
+                line=record.readline().strip("\n")
+                NN_matrix[layer][1][index][0]=float(line)
         return NN_matrix
     
     def create_nn_matrices_gen(self, info_dict,record):
@@ -188,11 +186,8 @@ class sherlockPrinter(NeuralNetParser):
                 for index2 in range(0,weight_matrix_shape[1]):
                     line=record.readline().strip("\n")
                     NN_matrix[layer][0][index][index2]=float(line)
-            for index3 in range(0,bias_matrix_shape[0]):
-                for index4 in range(0,bias_matrix_shape[1]):
-                    #print(index3,",",index4)
-                    line=record.readline().strip("\n")
-                    NN_matrix[layer][1][index3][index4]=float(line)
+                line=record.readline().strip("\n")
+                NN_matrix[layer][1][index][0]=float(line)
         return NN_matrix
     
     def create_matfile_matrix_dict(self, NN_matrix):
