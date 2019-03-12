@@ -1,17 +1,16 @@
 %% Convert neural networks saved as struct to net objects 
 % clc;clear
 %%  Load the neural network file
-%file = 'SingleCarPlant'; %Has to be a .mat file
 % load('SingleCarPlant'); %all variables from file are loaded into workspace
-% file = SingleCarPlant; 
+% network_file = SingleCarPlant; 
 
 %% Parameters of the network
-nl = double(file.number_of_layers); % # of layers
-ni = double(file.number_of_inputs); % # of inputs
-no = double(file.number_of_outputs); % # of outputs
+nl = double(network_file.number_of_layers); % # of layers
+ni = double(network_file.number_of_inputs); % # of inputs
+no = double(network_file.number_of_outputs); % # of outputs
 
 %% Transform names of activations function to its corresponding name in MATLAB
-act = erase(string(file.activation_fcns)," "); %transform to strings
+act = erase(string(network_file.activation_fcns)," "); %transform to strings
 
 for i = 1:nl
     if act(i) == "relu" %ReLU activation function
@@ -29,46 +28,31 @@ for i = 1:nl
     else
         disp("The activation function of layer "+i+" is currently not supported");
     end
-end   
-% for i = 1:nl
-%     if contains(string(file.activation_fcns(i,:)),"relu")
-%         lystype{i} = 'poslin';
-%     elseif contains(string(file.activation_fcns(i,:)),"linear")
-%         lystype{i} = 'purelin';
-%     elseif contains(string(file.activation_fcns(i,:)),"sigmoid")
-%         lystype{i} = 'logsig';
-%     elseif contains(string(file.activation_fcns(i,:)),"tanh")
-%         lystype{i} = 'tansig';
-%     %elseif 
-%     else
-%         lystype{i} = file.activation_fcns(i,:);
-%     end
-% end   
+end     
 
-    %% Create and define feedforward network
-net = feedforwardnet(double(file.layer_sizes(1:(end-1))));
-% net.inputs{1}.size = ni;
+%% Create and define feedforward network
+net = feedforwardnet(double(network_file.layer_sizes(1:(end-1))));
 net.inputs{1}.processFcns = {}; %Remove preprocessing functions in the inputs and outputs
 net.outputs{nl}.processFcns = {};
 
 %% Transfer functions
 for i = 1:nl
-    net.layers{i}.size = length(file.b{1,i});
+    net.layers{i}.size = length(network_file.b{1,i});
     %net.layers{i}.transferFcn = 'poslin'; %poslin = relu
     net.layers{i}.transferFcn = lystype{i}; %poslin = relu
-    length(file.b{1,i});
+    length(network_file.b{1,i});
 end
 
 %% Weights matrics
 net.inputs{1}.size = ni;
 for i = 1:nl-1
-    net.LW{i+1,i} = double(file.W{i+1});
+    net.LW{i+1,i} = double(network_file.W{i+1});
 end
-net.IW{1,1} = double(file.W{1});
+net.IW{1,1} = double(network_file.W{1});
 
 %% Bias matrices
 for i =1:nl
-    net.b{i} = double(file.b{i});
+    net.b{i} = double(network_file.b{i});
 end
 
 %% Save files
@@ -77,9 +61,3 @@ end
 
 %% Generate simulink file
 % gensim(net)
-
-%% Future work
-% Need to fix some errors either here or in the keras parser, since Feiyang
-% built a keras model where he has different layers for the activation, so
-% it works similar to tensorflow (linear -> relu -> linear -> relu ->
-% linear

@@ -78,6 +78,11 @@ class kerasPrinter(NeuralNetParser):
             for i in range(0,nl):
                 if 'activation' in config[i]['config']:
                     lfs.append(config[i]['config']['activation'])
+                elif 're_lu' in config[i]['config']:
+                    if (config[i]['config']['max_value'] == 1.0 and config[i]['config']['threshold'] == 0.0): 
+                        lfs.append('relu1')
+                    elif (config[i]['config']['max_value'] == 1.0 and config[i]['config']['threshold'] == -1.0):
+                        lfs.append('relu2')
         if type(config)==dict:
             l = config['layers']
             lys = []
@@ -88,6 +93,11 @@ class kerasPrinter(NeuralNetParser):
             for i in range(0,nl):
                 if 'activation' in l[i]['config']:
                     lfs.append(l[i]['config']['activation'])
+                elif 're_lu' in l[i]['config']:
+                    if (l[i]['config']['max_value'] == 1.0 and l[i]['config']['threshold'] == 0.0): 
+                        lfs.append('relu1')
+                    elif (l[i]['config']['max_value'] == 1.0 and l[i]['config']['threshold'] == -1.0):
+                        lfs.append('relu2')
         return(lys,lfs)
     #[lys,lfs] = get_layers(model,nl)   
         
@@ -143,17 +153,14 @@ class kerasPrinter(NeuralNetParser):
                 fns.append(lfs[n])
                 break
             elif lys[n] == 'Activation':
-                print('Adding '+str(lys[n])+' in layer '+str(i+1))
                 fns.append(lfs[n])
                 i = i+1
                 n += 1
             elif (lys[n] == 'Dense' and (lys[n+1] != 'Activation' and lys[n+1] != 'ReLU')):
-                print('Adding a linear layer ' + str(lys[i]))
                 fns.append(lfs[n])
                 i = i+1
                 n += 1
             else:
-                print('Nothing to add on layer '+str(n))
                 n += 1
         return fns
         
