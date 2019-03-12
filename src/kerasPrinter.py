@@ -111,18 +111,6 @@ class kerasPrinter(NeuralNetParser):
         return lsize,n,nls
     #[lsize,n,nls] = get_neurons(model,nl)
     
-    # Load the weights and biases
-    #def get_w_and_b(model,nls):
-    #    w = model.get_weights()
-    #    W=[]
-    #    for i in range(0,int(nls)): #-2 due to the special case of concatenating last 3 defined layers
-    #        W.append(w[2*i])
-    #    b=[]
-    #    for i in range(0,int(nls)): #-2 due to the special case of concatenating last 3 defined layers
-    #        b.append(w[2*i+1])
-    #    return W,b
-    #[W,b] = get_w_and_b(model,nls)
-    
     def get_parameters(self, model,nl,nls):
         [lys,lfs] = self.get_layers(model,nl)
         w = model.get_weights()
@@ -145,11 +133,34 @@ class kerasPrinter(NeuralNetParser):
                 i = i+1 
         return W,b
     #[W,b] = get_parameters(model,nl,nls)
+    
+    def get_activationFunctions(self,lys,lfs,lsize):
+        fns = []
+        i = 0
+        n = 0
+        while i < len(lsize):
+            if n == len(lys)-1:
+                fns.append(lfs[n])
+                break
+            elif lys[n] == 'Activation':
+                print('Adding '+str(lys[n])+' in layer '+str(i+1))
+                fns.append(lfs[n])
+                i = i+1
+                n += 1
+            elif (lys[n] == 'Dense' and (lys[n+1] != 'Activation' and lys[n+1] != 'ReLU')):
+                print('Adding a linear layer ' + str(lys[i]))
+                fns.append(lfs[n])
+                i = i+1
+                n += 1
+            else:
+                print('Nothing to add on layer '+str(n))
+                n += 1
+        return fns
         
     # Save the nn information in a mat file
-    def save_nnmat_file(self,model,ni,no,nls,n,lsize,W,b,lys,lfs):
+    def save_nnmat_file(self,model,ni,no,nls,n,lsize,W,b,lys,fns):
         nn1 = dict({'number_of_inputs':ni,'number_of_outputs':no ,'number_of_layers':nls,
-                    'number_of_neurons':n,'layer_sizes':lsize,'W':W,'b':b,'types_of_layers':lys,'activation_fcns':lfs})
+                    'number_of_neurons':n,'layer_sizes':lsize,'W':W,'b':b,'types_of_layers':lys,'activation_fcns':fns})
         sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"), nn1)
     
     # parse the nn imported from keras as json and h5 files
@@ -159,7 +170,8 @@ class kerasPrinter(NeuralNetParser):
         [lys,lfs] = self.get_layers(model,nl)
         [lsize,n,nls] = self.get_neurons(model,nl)
         [W,b] = self.get_parameters(model,nl,nls)
-        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
+        fns = self.get_activationFunctions(lys,lfs,lsize)
+        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,fns)
         
     def parse_nn_wout_json(self, modelfile):
         model = models.load_model(modelfile)
@@ -167,4 +179,5 @@ class kerasPrinter(NeuralNetParser):
         [lys,lfs] = self.get_layers(model,nl)
         [lsize,n,nls] = self.get_neurons(model,nl)
         [W,b] = self.get_parameters(model,nl,nls)
-        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
+        fns = self.get_activationFunctions(lys,lfs,lsize)
+        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,fns)
