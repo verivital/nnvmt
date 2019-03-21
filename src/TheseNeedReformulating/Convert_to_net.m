@@ -22,9 +22,9 @@ for i = 1:nl
     elseif act(i) == "tanh" %Hyperbolic tangent activation function
         lystype{i} = 'tansig';
     elseif act(i) == "relu1" %Saturation linear function from 0 to 1
-        lystype{i} = 'satlin'
+        lystype{i} = 'satlin';
     elseif act(i) == "relu2" %Saturation linear function from -1 to 1
-        lystype{i} = 'satlins'
+        lystype{i} = 'satlins';
     else
         disp("The activation function of layer "+i+" is currently not supported");
     end
@@ -52,7 +52,7 @@ net.IW{1,1} = double(network_file.W{1});
 
 %% Bias matrices
 for i =1:nl
-    net.b{i} = double(network_file.b{i});
+    net.b{i} = double(network_file.b{i}');
 end
 
 %% Save files

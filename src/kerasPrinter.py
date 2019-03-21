@@ -67,7 +67,7 @@ class kerasPrinter(NeuralNetParser):
         return nl,ni,no
     #[nl,ni,no] = get_shape(model)
     
-    def get_layers(self, model,nl):
+    def get_layers(self,model,nl):
         config = model.get_config()
         if type(config)==list:
             lys = [] #list of types of layers in the network
@@ -93,11 +93,13 @@ class kerasPrinter(NeuralNetParser):
             for i in range(0,nl):
                 if 'activation' in l[i]['config']:
                     lfs.append(l[i]['config']['activation'])
-                elif 're_lu' in l[i]['config']:
+                elif 're_lu' in l[i]['config']['name']:
                     if (l[i]['config']['max_value'] == 1.0 and l[i]['config']['threshold'] == 0.0): 
                         lfs.append('relu1')
                     elif (l[i]['config']['max_value'] == 1.0 and l[i]['config']['threshold'] == -1.0):
                         lfs.append('relu2')
+                    else:
+                        lfs.append('relu')
         return(lys,lfs)
     #[lys,lfs] = get_layers(model,nl)   
         
@@ -143,31 +145,21 @@ class kerasPrinter(NeuralNetParser):
                 i = i+1 
         return W,b
     #[W,b] = get_parameters(model,nl,nls)
-    
-    def get_activationFunctions(self,lys,lfs,lsize):
-        fns = []
-        i = 0
-        n = 0
-        while i < len(lsize):
-            if n == len(lys)-1:
-                fns.append(lfs[n])
-                break
-            elif lys[n] == 'Activation':
-                fns.append(lfs[n])
-                i = i+1
-                n += 1
-            elif (lys[n] == 'Dense' and (lys[n+1] != 'Activation' and lys[n+1] != 'ReLU')):
-                fns.append(lfs[n])
-                i = i+1
-                n += 1
-            else:
-                n += 1
-        return fns
+
+    def fix_activations(self,lys,lfs):
+        acts = []
+        for i in range(len(lys)-2):
+            if (lys[i] == 'Dense' and lys[i+1] =='Dense'):
+                acts.append(lfs[i])
+            elif lys[i] != 'Dense':
+                acts.append(lfs[i])    
+        acts.append(lfs[len(lys)-1])
+        return acts
         
     # Save the nn information in a mat file
-    def save_nnmat_file(self,model,ni,no,nls,n,lsize,W,b,lys,fns):
+    def save_nnmat_file(self,model,ni,no,nls,n,lsize,W,b,lys,lfs):
         nn1 = dict({'number_of_inputs':ni,'number_of_outputs':no ,'number_of_layers':nls,
-                    'number_of_neurons':n,'layer_sizes':lsize,'W':W,'b':b,'types_of_layers':lys,'activation_fcns':fns})
+                    'number_of_neurons':n,'layer_sizes':lsize,'W':W,'b':b,'types_of_layers':lys,'activation_fcns':lfs})
         sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"),  mdict={'network_file':nn1})
     
     # parse the nn imported from keras as json and h5 files
@@ -175,16 +167,16 @@ class kerasPrinter(NeuralNetParser):
         model = self.load_files(modelfile,weightsfile)
         [nl,ni,no] = self.get_shape(model)
         [lys,lfs] = self.get_layers(model,nl)
+        lfs = self.fix_activations(lys,lfs)
         [lsize,n,nls] = self.get_neurons(model,nl)
         [W,b] = self.get_parameters(model,nl,nls)
-        fns = self.get_activationFunctions(lys,lfs,lsize)
-        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,fns)
+        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
         
     def parse_nn_wout_json(self, modelfile):
         model = models.load_model(modelfile)
         [nl,ni,no] = self.get_shape(model)
         [lys,lfs] = self.get_layers(model,nl)
+        lfs = self.fix_activations(lys,lfs)
         [lsize,n,nls] = self.get_neurons(model,nl)
         [W,b] = self.get_parameters(model,nl,nls)
-        fns = self.get_activationFunctions(lys,lfs,lsize)
-        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,fns)
+        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
