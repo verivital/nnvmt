@@ -13,13 +13,16 @@ from src.NeuralNetParser import NeuralNetParser
 import scipy.io as sio
 from onnx import *
 
+import tensorflow as tf
 import h5py as h5
 import json
 from pprint import pprint
 import keras
 from keras import models
+from tensorflow.python.keras.initializers import glorot_uniform
 from keras.models import load_model
 from keras.models import model_from_json
+from keras.utils import *
 
 #abstract class for keras printers
 class kerasPrinter(NeuralNetParser):
@@ -51,10 +54,11 @@ class kerasPrinter(NeuralNetParser):
     
     # Load the plant with parameters included
     def load_files(self, modelfile,weightsfile):
-        with open(modelfile, 'r') as jfile:
-            model = model_from_json(jfile.read())
-        model.load_weights(weightsfile)
-        return model
+    	with CustomObjectScope({'GlorotUniform': glorot_uniform()}):
+    		with open(modelfile, 'r') as jfile:
+    			model = keras.models.model_from_json(jfile.read())
+    		model.load_weights(weightsfile)
+    	return model
     #model = load_files(modelfile,weightsfile)
     
     #Load the size of the plant
