@@ -52,7 +52,7 @@ net.IW{1,1} = double(network_file.W{1});
 
 %% Bias matrices
 for i =1:nl
-    net.b{i} = double(network_file.b{i}');
+    net.b{i} = double(network_file.b{i});
 end
 
 %% Save files

@@ -96,7 +96,7 @@ class TensorflowPrinter(NeuralNetParser):
     def save_nnmat_file(self,ni,no,nl,lsize,W,b,lys):
         nn1 = dict({'number_of_inputs':ni,'number_of_outputs':no ,'number_of_layers':nl,
                     'layer_sizes':lsize,'W':W,'b':b,'activation_fcns':lys})
-        sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"),  mdict={'network_file':nn1})
+        sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"),  nn1)
     #save_nnmat_file(ni,no,nl,n,lsize,W,b,lys)
     
     # parse the nn imported from keras as json and h5 files
