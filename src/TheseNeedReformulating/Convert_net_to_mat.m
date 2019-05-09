@@ -8,7 +8,7 @@ file = 'controller_Lcontainer_3in.mat'; %name of your file
 max = 10; %establish max length for the char matrix of activation functions
 
 % Get NN attributes
-% W = {net.IW{1} net.LW{2} net.LW{6}}; % weights
+
 W{1} = net.IW{1}; % weights layer one
 for i=1:length(net.b)-1 % weights
     W{i+1} = net.LW{i+1,i};
@@ -22,10 +22,6 @@ for i = 1:length(net.b)
     padded_str(1:min(20,length(str))) = str(1:min(20,length(str))); % add spaces to have same lengths
     activation_fcns(i,:) = padded_str; % activation function at layer i with spaces added
 end
-
-% b = {net.b{1} net.b{2} net.b{3}}; % bias
-% activation_fcns = ['relu  ';'relu  ';'linear']; %activation function
-% layer_sizes = [net.layers{1}.size net.layers{2}.size net.layers{3}.size];
 
 % Other parameters
 number_of_inputs = size(net.IW{1},2); % inputs to the NN
