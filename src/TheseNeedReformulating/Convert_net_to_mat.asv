@@ -1,4 +1,36 @@
 %% Convert net (network object) to mat
 
-%load network
-W = {{net.IW{1} net.
+% load network
+file = 'controller_Lcontainer_3in.mat'; %name of your file
+%load(file);
+
+% Define parameters
+max = 10; %establish max length for the char matrix of activation functions
+
+% Get NN attributes
+% W = {net.IW{1} net.LW{2} net.LW{6}}; % weights
+W{1} = net.IW{1};
+for i=1:length(net.b)
+
+end
+
+for i = 1:length(net.b)
+    b{i} = net.b{i};
+    
+    layer_sizes(i) = net.layers{i}.size;
+    str = net.layers{i}.transferFcn;
+    activation_fcns(i,:) = repmat(' ',1, max);
+    activation_fcns(i:min(20,length(str))) = str(i:min(20,length(str)));
+end
+% b = {net.b{1} net.b{2} net.b{3}}; % bias
+% activation_fcns = ['relu  ';'relu  ';'linear']; %activation function
+% layer_sizes = [net.layers{1}.size net.layers{2}.size net.layers{3}.size];
+
+% Other parameters
+number_of_inputs = size(net.IW{1},2);
+number_of_outputs = size(W{end},1);
+number_of_layers = length(b);
+
+% Save network
+save(file,'W','b','layer_sizes','activation_fcns','number_of_inputs',...
+    'number_of_outputs','number_of_layers');
