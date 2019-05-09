@@ -1,0 +1,4 @@
+%% Convert net (network object) to mat
+
+%load network
+W = {{net.IW{1} net.
