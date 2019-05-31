@@ -18,6 +18,8 @@ Make sure you have the following packages installed:
      - ```conda install -c anaconda h5py```
   - Pathlib
      - ```conda install -c menpo pathlib``` 
+  - ONNX-tf (Only required for ONNX_to_Mat)
+     - ```pip install onnx-tf```
 ### Linux
 - make sure you have installed [TkInter](https://wiki.python.org/moin/TkInter)
   - if you have anaconda run:
