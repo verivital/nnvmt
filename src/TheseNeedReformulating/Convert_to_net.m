@@ -52,7 +52,7 @@ net.IW{1,1} = double(W{1});
 
 %% Bias matrices
 for i =1:nl
-    net.b{i} = double(b{i}');
+    net.b{i} = double(b{i});
 end
 
 %% Save files
@@ -60,4 +60,4 @@ end
 %save(savefile,'net');
 
 %% Generate simulink file
-gensim(net)
+% gensim(net)
