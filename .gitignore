@@ -1,0 +1,7 @@
+#Don't track content of these folders
+src/__pycache__
+src/TheseNeedReformulating/slprj
+
+#Ignore compiled source 
+*.pyc
+*.so
