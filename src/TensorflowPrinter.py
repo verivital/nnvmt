@@ -94,8 +94,7 @@ class TensorflowPrinter(NeuralNetParser):
     
     # Save the neural network to mat file
     def save_nnmat_file(self,ni,no,nl,lsize,W,b,lys):
-        nn1 = dict({'number_of_inputs':ni,'number_of_outputs':no ,'number_of_layers':nl,
-                    'layer_sizes':lsize,'W':W,'b':b,'activation_fcns':lys})
+        nn1 = dict({'W':W,'b':b,'act_fcns':lys})
         sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"),  nn1)
     #save_nnmat_file(ni,no,nl,n,lsize,W,b,lys)
     

@@ -162,8 +162,7 @@ class kerasPrinter(NeuralNetParser):
         
     # Save the nn information in a mat file
     def save_nnmat_file(self,model,ni,no,nls,n,lsize,W,b,lys,lfs):
-        nn1 = dict({'number_of_inputs':ni,'number_of_outputs':no ,'number_of_layers':nls,
-                    'number_of_neurons':n,'layer_sizes':lsize,'W':W,'b':b,'types_of_layers':lys,'activation_fcns':lfs})
+        nn1 = dict({'W':W,'b':b,'act_fcns':lfs})
         sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"),  nn1)
     
     # parse the nn imported from keras as json and h5 files

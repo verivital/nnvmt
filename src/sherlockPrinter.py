@@ -123,6 +123,9 @@ class sherlockPrinter(NeuralNetParser):
             dicti['number_of_inputs']= int(number_of_inputs)
             dicti['number_of_outputs']=int(number_of_outputs)
             dicti['number_of_layers']=int(number_of_layers)
+            act_array=["relu"]*(int(number_of_layers)+1)
+            act_array[-1]="linear"
+            dicti["act_fcns"]=act_array
             dicti['number_of_neurons_in_first_layer']= int(number_of_neurons_per_layer)
         else:
             print("Sherlock file not structured correctly")
@@ -203,8 +206,7 @@ class sherlockPrinter(NeuralNetParser):
         NN_matrix_dict={}
         import scipy.io as sio
         import os
-        for item in info_dict:
-            NN_matrix_dict[item]=info_dict[item]
+        NN_matrix_dict["act_fcns"]=info_dict["act_fcns"]
         NN_matrix_dict['W']=network_weight_matrices
         NN_matrix_dict['b']=network_bias_matrices
         path=os.path.join(directory_name,file_name+".mat")
