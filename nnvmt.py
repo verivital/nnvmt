@@ -3,14 +3,17 @@
 """
 Created on Tue Nov 20 20:24:39 2018
 
-@author: Musau
+@author: Patrick Musau and Diego Manzanas
 """
+
 
 
 from __future__ import print_function
 import argparse
 import os
-
+import warnings
+os.environ['KMP_WARNINGS'] = 'FALSE'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from src.reluPlexPrinter import reluplexPrinter
 from src.sherlockPrinter import sherlockPrinter
 from src.kerasPrinter import kerasPrinter
