@@ -18,6 +18,7 @@ from src.reluPlexPrinter import reluplexPrinter
 from src.sherlockPrinter import sherlockPrinter
 from src.kerasPrinter import kerasPrinter
 from src.TensorflowPrinter import TensorflowPrinter
+from src.tf_eran_printer import Tf_eran_printer
 #from src.onnxPrinter import onnxPrinter
 
 
@@ -46,7 +47,7 @@ def commandLineInterface():
 def decideTool(name,inputPath):
     #get the base name of the path:
     basename=os.path.basename(inputPath)
-    if (name=="Reluplex") or (name=="reluplex"):
+    if (name=="Reluplex") or (name=="reluplex") or (name=="nnet"):
         #if its from reluplex it will end in .nnet. If not throw an error
         if('.nnet' in basename):
             fileType="Reluplex"
@@ -65,7 +66,13 @@ def decideTool(name,inputPath):
         if('.h5' in basename):
             fileType="Keras"
         else:
-            print("Error: Unrecognized Keras format. Expected .h5 format")
+            print("Error: Unrecognized Keras format. Expected filename extension is .h5")
+            fileType=None
+    elif name=="mat" or name=="Matfile":
+        if('.mat' in basename):
+            fileType="mat"
+        else:
+            print("Error: Unrecognized Matfile format. Expected filename extension is .mat")
             fileType=None
     else:
         print("Error: Unrecognized input format. Tools currently supported (Reluplex, Sherlock)")
@@ -90,6 +97,8 @@ def decideOutput(name):
         outputType="mat"
     elif name=="onnx" or name=="ONNX":
         outputType="onnx"
+    elif name=="tf" or name=="ERAN":
+        outputType="tf"
     else:
         print("Error: Unrecognized output format. Output formats currently supported (Onnx, Mat)")
         outputType=None
@@ -120,6 +129,8 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
             print("Error: Unrecognized Keras format. Expected .json file")
     elif(toolName=="Keras" and outputFormat=="onnx"):
         print("Sorry still developping this")
+    elif (toolName=="mat" and outputFormat=="tf"):
+        Tf_eran_printer(inputPath,outputpath)
     else:
         print(toolName,outputFormat)
         

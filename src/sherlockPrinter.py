@@ -3,7 +3,7 @@
 """
 Created on Fri Nov  2 13:50:54 2018
 
-@author: musaup
+@author: Patrick Musau and Diego Manzanas 
 """
 
 from __future__ import division, print_function, unicode_literals, absolute_import
