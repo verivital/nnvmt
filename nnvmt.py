@@ -17,6 +17,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from src.reluPlexPrinter import reluplexPrinter
 from src.sherlockPrinter import sherlockPrinter
 from src.kerasPrinter import kerasPrinter
+from src.TensorflowPrinter import TensorflowPrinter
+#from src.onnxPrinter import onnxPrinter
 
 
 
