@@ -9,7 +9,7 @@ Create a new conda environment:  ```conda create -n myenv python=3.6```
 
 Activate the environment: ```conda activate myenv``` 
 
-Install the dependencies run the following command: 
+To install the dependencies run the following command: 
 
 ``` pip install --user -r requirements.txt```
 
