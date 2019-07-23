@@ -68,6 +68,13 @@ def decideTool(name,inputPath):
         else:
             print("Error: Unrecognized Keras format. Expected filename extension is .h5")
             fileType=None
+    elif name =="Tensorflow" or name == "tensorflow":
+        #check to see if the files provided are correct
+        if('.meta' in basename):
+            fileType="Tensorflow"
+        else:
+            print("Error: Unrecognized Tensorflow format. Expected filename extension is .meta")
+            fileType=None
     elif name=="mat" or name=="Matfile":
         if('.mat' in basename):
             fileType="mat"
@@ -118,6 +125,9 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
     elif(toolName=="Sherlock" and outputFormat=="onnx"):
         printer=sherlockPrinter(inputPath,outputpath)
         printer.create_onnx_model()
+    elif(toolName=="Tensorflow" and outputFormat=="mat"):
+        printer=TensorflowPrinter(inputPath,outputpath,jsonFile)
+        printer.saveMatfile()
     elif(toolName=="Keras" and outputFormat=="mat"):
         #check the json file
         checkNum=checkJson(jsonFile)

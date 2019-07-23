@@ -12,15 +12,15 @@ from src.NeuralNetParser import NeuralNetParser
 import scipy.io as sio
 from onnx import *
 import tensorflow as tf
-from tensorflow.python.training import checkpoint_utils as cp
+#from tensorflow.python.training import checkpoint_utils as cp
 
 # May need to uncomment it if run into errors when running multiple tf sessions
-# tf.reset_default_graph()  
+tf.reset_default_graph()  
 
 #abstract class for keras printers
 class TensorflowPrinter(NeuralNetParser):
     #Instantiate files and create a matfile
-    def __init__(self,pathToOriginalFile, OutputFilePath, *vals):
+    def __init__(self,pathToOriginalFile, OutputFilePath, pathToCkpt):
         #get the name of the file without the end extension
         filename=os.path.basename(os.path.normpath(pathToOriginalFile))
         filename=filename.replace('.meta','')
@@ -29,6 +29,7 @@ class TensorflowPrinter(NeuralNetParser):
         self.pathToOriginalFile=pathToOriginalFile
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
+        self.pathToCkpt = pathToCkpt
         self.parse_nn(filename)
             
 
@@ -40,68 +41,134 @@ class TensorflowPrinter(NeuralNetParser):
         print("Sorry this is still under development")
         
     # load the parameters and models
-    def load_network(self,filename):
+    def load_network(self,filename,pathckpt):
         with tf.Session() as sess:
-            new_saver = tf.train.import_meta_graph(filename+'.meta')
-            new_saver.restore(sess, tf.train.latest_checkpoint('./'))
+            new_saver = tf.train.import_meta_graph(filename)
+            new_saver.restore(sess, tf.train.latest_checkpoint(pathckpt))
             w = tf.trainable_variables() # create list of weights and biases (tf variables)
-            w = sess.run(w) # convert the list of tf variables of w to np arrays
+            a = []
+            #v_names = []
+            for i in w:
+                if 'optimization' not in i.name:
+                    if 'action-exploration' not in i.name:
+                        a.append(i)
+                        #v_names.append(i.name)
+            w = sess.run(a) # convert the list of tf variables of w to np arrays
             w1 = sess.graph.get_operations() #gets all the operations done in the network
-    
-        return w,w1
-    #[w,w1] = load_network(filename)
-    
+            a = []
+            for i in w1:
+                if 'optimization' not in i.name:
+                    if 'initial' not in i.name:
+                        a.append(i)
+        sess.close()    
+        return w,a    
     
     def get_layers(self,w,w1):
         lys = []
+        names = [] # Store names to check later for connections and no duplications
+        inp = []
         for i in range(len(w1)):
             if 'Sigmoid' == w1[i].type:
                 lys.append(w1[i].type)
+                names.append(w1[i].name)
+                inp.append(w1[i].node_def.input)
             elif 'Relu' == w1[i].type:
-                lys.append(w1[i].type)
+                lys.append('relu')
+                names.append(w1[i].name)
+                inp.append(w1[i].node_def.input)
             elif 'Tanh' == w1[i].type:
                 lys.append(w1[i].type)
+                names.append(w1[i].name)
+                inp.append(w1[i].node_def.input)
+            elif 'MatMul' == w1[i].type:
+                lys.append(w1[i].type)
+                names.append(w1[i].name)
+                inp.append(w1[i].node_def.input)
             elif 'Softmax' == w1[i].type:
                 lys.append(w1[i].type)
+                names.append(w1[i].name)
+                inp.append(w1[i].node_def.input)
     
-        return lys
-    #lys = get_layers(w,w1)
+        return lys,names,inp
     
+    # All activation functions in tf have a "linear" layer prior to it, 
+    # need to remove those from the list
+    def check_layers(self,l_names,lys,inp_con):
+        a = []
+        acts = []
+        count = 0
+        for i in l_names:
+            a.append(i.split('/'))
+        i = 0
+        while i < len(lys)-1:
+            if lys[i] == 'MatMul':
+                bb = set(a[i]).symmetric_difference(set(a[i+1]))
+                if not any(n in 'linear' for n in bb):
+                    acts.append('linear')
+                else:
+                    inp_con.pop(i+1-count)
+                    l_names.pop(i-count)
+                    count+=1
+                i+=1
+            else:
+                acts.append(lys[i])
+                i+=1
+        # Add last layer
+        if lys[i] == 'MatMul':
+            acts.append('linear')
+        else:
+            acts.append(lys[i])
+        return acts
+        
+    # from the list of all trainable variables, divide them into W and b
     def get_parameters(self,w):
         W = [] # weights
         b = [] # bias
-        lsize = []
-        no = len(w[-1])
-        if len([w[1].size]) == 1:
-            if len(w[0]) == len(w[1]):
-                ni = len(w[0][0])
-            else:
-                ni = len(w[0])
-        else:
-            if len(w[0]) == len(w[1]):
-                ni = len(w[0][0])
-            else:
-                ni = len(w[0])
         for i in range(int(len(w)/2)):
             W.append(np.float64(w[2*i]))
             b.append(np.float64(w[2*i+1]))
-            lsize.append(b[i].size)
-        nl = len(b)
-            
-        return W,b,lsize,ni,no,nl
+        return W,b,
+        
+    # establish the connections from layer to layer
+    def layer_connections(self,l_names,inp_con):
+        inputs = [0]
+        for i in range(1,len(l_names)):
+            if not any(n in inp_con[i][0] for n in l_names):
+                inputs.append(i+1)
+            else:
+                inputs.append(l_names.index(inp_con[i][0])+1)
+        return inputs           
+    
+    # reorganize W and b based on connections
+    def reorg(self,inputs,W,b,acts):
+        i = 0
+        count = 0
+        while count < len(inputs)-1:
+            if inputs[i] == inputs[i+1]:
+                W[i] = np.concatenate([W[i],W.pop(i+1)],1)
+                b[i] = np.concatenate([np.array(b[i]).reshape(-1,1),np.array(b.pop(3)).reshape(-1,1)],0)
+                b[i] = b[i].T
+                acts.pop(i+1)
+                count+=1
+            else:
+                i+=1
+                count+=1
+        return W,b,acts
     
     # Save the neural network to mat file
-    def save_nnmat_file(self,ni,no,nl,lsize,W,b,lys):
-        nn1 = dict({'W':W,'b':b,'act_fcns':lys})
-        sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"),  nn1)
-    #save_nnmat_file(ni,no,nl,n,lsize,W,b,lys)
+    def save_nnmat_file(self,W,b,acts):
+        nn1 = dict({'W':W,'b':b,'act_fcns':acts})
+        sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"), nn1)
+    #save_nnmat_file(Wf,bf,actsf)
     
     # parse the nn imported from keras as json and h5 files
-    def parse_nn(self,filename):
-        [w,w1] = self.load_network(filename)
-        lys = self.get_layers(w,w1)
-        [W,b,lsize,ni,no,nl] = self.get_parameters(w)
-        self.save_nnmat_file(ni,no,nl,lsize,W,b,lys)
+    def parse_nn(self,filename,pathckpt):
+        [w,w1] = self.load_network(filename,pathckpt)
+        [lys,l_names,inp_con] = self.get_layers(w,w1)
+        acts = self.check_layers(l_names,lys,inp_con)
+        [W,b] = self.get_parameters(w)
+        inputs = self.layer_connections(l_names,inp_con)
+        [Wf,bf,actsf] = self.reorg(inputs,W,b,acts)
+        self.save_nnmat_file(Wf,bf,actsf)
+        
 
-    
-    # sess.close()
