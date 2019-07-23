@@ -22,7 +22,9 @@ Alternatively, if you would like to install each package independently run the f
   - Pathlib
      - ```conda install -c menpo pathlib``` 
   - ONNX
-     - ```pip install onnx==1.4.1``` 
+     - ```pip install onnx``` 
+  - Tensorflow
+     - ```pip install tensorflow```
 ### Linux
 - make sure you have installed [TkInter](https://wiki.python.org/moin/TkInter)
   - if you have anaconda run:
