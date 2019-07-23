@@ -14,6 +14,8 @@ import os
 import warnings
 os.environ['KMP_WARNINGS'] = 'FALSE'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+from tensorflow.python.util import deprecation
+deprecation._PRINT_DEPRECATION_WARNINGS = False
 from src.reluPlexPrinter import reluplexPrinter
 from src.sherlockPrinter import sherlockPrinter
 from src.kerasPrinter import kerasPrinter
