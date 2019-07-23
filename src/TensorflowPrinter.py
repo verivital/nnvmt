@@ -30,7 +30,7 @@ class TensorflowPrinter(NeuralNetParser):
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
         self.pathToCkpt = pathToCkpt
-        self.parse_nn(filename)
+        self.parse_nn(pathToOriginalFile,pathToCkpt)
             
 
     #function for creating the matfile
@@ -125,8 +125,8 @@ class TensorflowPrinter(NeuralNetParser):
         W = [] # weights
         b = [] # bias
         for i in range(int(len(w)/2)):
-            W.append(np.float64(w[2*i]))
-            b.append(np.float64(w[2*i+1]))
+            W.append(np.float64(w[2*i].T))
+            b.append(np.float64(w[2*i+1].T))
         return W,b,
         
     # establish the connections from layer to layer
@@ -145,7 +145,7 @@ class TensorflowPrinter(NeuralNetParser):
         count = 0
         while count < len(inputs)-1:
             if inputs[i] == inputs[i+1]:
-                W[i] = np.concatenate([W[i],W.pop(i+1)],1)
+                W[i] = np.concatenate([W[i],W.pop(i+1)],0)
                 b[i] = np.concatenate([np.array(b[i]).reshape(-1,1),np.array(b.pop(3)).reshape(-1,1)],0)
                 b[i] = b[i].T
                 acts.pop(i+1)

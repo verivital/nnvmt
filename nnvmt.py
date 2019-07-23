@@ -127,7 +127,7 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
         printer.create_onnx_model()
     elif(toolName=="Tensorflow" and outputFormat=="mat"):
         printer=TensorflowPrinter(inputPath,outputpath,jsonFile)
-        printer.saveMatfile()
+        #printer.saveMatfile()
     elif(toolName=="Keras" and outputFormat=="mat"):
         #check the json file
         checkNum=checkJson(jsonFile)
