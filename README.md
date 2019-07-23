@@ -12,18 +12,16 @@ Make sure you have the following packages installed:
       - ```conda install -c anaconda scipy```
   - Keras
       - ```conda install -c anaconda keras``` 
-  - ONNX
-     - Instructions can be found [here](https://github.com/onnx/onnx)
   - h5py
      - ```conda install -c anaconda h5py```
   - Pathlib
      - ```conda install -c menpo pathlib``` 
-  - ONNX-tf (Only required for ONNX_to_Mat)
-     - ```pip install onnx-tf```
+  - ONNX
+     - ```pip install onnx==1.4.1```
 ### Linux
 - make sure you have installed [TkInter](https://wiki.python.org/moin/TkInter)
   - if you have anaconda run:
-        ```conda install -c anaconda tk```
+        ```conda install -c anaconda tk``` or ```sudo apt-get install python-tk ```
 ## Parsers available for neural networks created in the following libraries:
 - [Keras (Tensorflow backend)](https://keras.io/)
 - [Tensorflow](https://www.tensorflow.org/)
