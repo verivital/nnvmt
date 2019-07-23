@@ -5,7 +5,9 @@ This repository contains an implementation of a translation tool for neural netw
 The tool is written is Python 3. If you are using a virtual enviromnment please make sure you are using Python 3. We highly recommend the use of [Anaconda](https://www.anaconda.com/download/)
 
 ## Installing the translator
-Make sure you have the following packages installed:
+To install the dependencies run the following command: 
+``` pip install --user -r requirements.txt```
+Alternatively, if you would like to install each package independently run the following commands:
   - Numpy
       - ```conda install -c anaconda numpy```
   - Scipy
@@ -17,7 +19,7 @@ Make sure you have the following packages installed:
   - Pathlib
      - ```conda install -c menpo pathlib``` 
   - ONNX
-     - ```pip install onnx==1.4.1```
+     - ```pip install onnx==1.4.1``` 
 ### Linux
 - make sure you have installed [TkInter](https://wiki.python.org/moin/TkInter)
   - if you have anaconda run:
