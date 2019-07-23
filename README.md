@@ -5,13 +5,9 @@ This repository contains an implementation of a translation tool for neural netw
 The tool is written is Python 3. If you are using a virtual enviromnment please make sure you are using Python 3. We highly recommend the use of [Anaconda](https://www.anaconda.com/download/)
 
 ## Installing the translator
-Create a new conda environment: 
+Create a new conda environment:  ```conda create -n myenv python=3.6```
 
-```conda create -n myenv python=3.6```
-
-Activate the environment:
-
-```conda activate myenv``` 
+Activate the environment: ```conda activate myenv``` 
 
 Install the dependencies run the following command: 
 
