@@ -19,7 +19,7 @@ import json
 from pprint import pprint
 import keras
 from keras import models
-from tensorflow.python.keras.initializers import glorot_uniform
+from keras.initializers import glorot_uniform, glorot_normal
 from keras.models import load_model
 from keras.models import model_from_json
 from keras.utils import *
@@ -55,9 +55,10 @@ class kerasPrinter(NeuralNetParser):
     # Load the plant with parameters included
     def load_files(self, modelfile,weightsfile):
     	with CustomObjectScope({'GlorotUniform': glorot_uniform()}):
-    		with open(modelfile, 'r') as jfile:
-    			model = keras.models.model_from_json(jfile.read())
-    		model.load_weights(weightsfile)
+            with CustomObjectScope({'GlorotNormal': glorot_normal()}):
+                with open(modelfile, 'r') as jfile:
+                    model = keras.models.model_from_json(jfile.read())
+                model.load_weights(weightsfile)
     	return model
     #model = load_files(modelfile,weightsfile)
     

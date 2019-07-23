@@ -29,9 +29,7 @@ class TensorflowPrinter(NeuralNetParser):
         self.pathToOriginalFile=pathToOriginalFile
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
-        #if a weight file was not specified use the first style parser 
-        #otherwise use the second style of parser
-        self.parse_nn
+        self.parse_nn(filename)
             
 
     #function for creating the matfile

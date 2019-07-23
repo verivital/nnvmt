@@ -19,6 +19,8 @@ deprecation._PRINT_DEPRECATION_WARNINGS = False
 from src.reluPlexPrinter import reluplexPrinter
 from src.sherlockPrinter import sherlockPrinter
 from src.kerasPrinter import kerasPrinter
+from src.TensorflowPrinter import TensorflowPrinter
+#from src.onnxPrinter import onnxPrinter
 
 
 

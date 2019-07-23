@@ -1,6 +1,6 @@
 # Neural Network Verification Model Translation Tool (NNVMT)
 
-This repository contains an implementation of a translation tool for neural network models into the [Open Neural Network Exchange format](https://github.com/onnx) developped by Facebook and Microsoft. The tool is also able to neural network models so that the weights and biases can be exported into the Microsoft Access Table (.mat) format. We are also working on implementing printing from the ONNX format into the various input formats of the formal sverification software tools available within the research literature. 
+This repository contains an implementation of a translation tool for neural network models into the [Open Neural Network Exchange format](https://github.com/onnx) developped by Facebook and Microsoft. The tool is also able to neural network models so that the weights and biases can be exported into the Microsoft Access Table (.mat) format. We are also working on implementing printing from the ONNX format into the various input formats of the formal verification software tools available within the research literature. 
 
 The tool is written is Python 3. If you are using a virtual enviromnment please make sure you are using Python 3. We highly recommend the use of [Anaconda](https://www.anaconda.com/download/)
 
@@ -25,12 +25,16 @@ Make sure you have the following packages installed:
   - if you have anaconda run:
         ```conda install -c anaconda tk```
 ## Parsers available for neural networks created in the following libraries:
-- [Keras](https://keras.io/)
+- [Keras (Tensorflow backend)](https://keras.io/)
+- [Tensorflow](https://www.tensorflow.org/)
 ## Verification Tools Currently Supported
 - [Reluplex](https://github.com/guykatzz/ReluplexCav2017)
 - [Sherlock](https://github.com/souradeep-111/sherlock)
 ## NNMT Usage 
-NNMT has been tested on MacOS Mojave Version 10.14
+NNMT has been tested on 
+ - MacOS Mojave Version 10.14
+ - Ubuntu 16.04.6 LTS (Xenial Xerus)
+ - Windows 10
 #### GUI 
 NNMT can be run through a GUI. To use the GUI, after installing the above libraries simply run `main.py`
 #### Command Line Usage
@@ -56,6 +60,11 @@ optional arguments:
 ```
 ### Converting An Example
 ```python nnvmt.py -i ...nnvmt/testing/neural_network_information_13 -o ...nnvmt/examples -t Sherlock -f onnx```
+
+The output obtained is saved as a .mat file containing the following:
+- **W**: weight matrices
+- **b**: bias matrices
+- **act_fcns**: activation functions
 #### Translating into other model formats
 To convert into the formats of other tools such as [Caffe2](https://caffe2.ai/docs/getting-started.html?platform=mac&configuration=prebuilt) [PyTorch] [Matlab](https://www.mathworks.com/matlabcentral/fileexchange/67296-deep-learning-toolbox-converter-for-onnx-model-format) or [several others](http://onnx.ai/getting-started) use the ONNX converter which can be found [here](https://github.com/onnx/tutorials)
 
