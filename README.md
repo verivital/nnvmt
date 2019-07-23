@@ -6,8 +6,11 @@ The tool is written is Python 3. If you are using a virtual enviromnment please 
 
 ## Installing the translator
 To install the dependencies run the following command: 
+
 ``` pip install --user -r requirements.txt```
+
 Alternatively, if you would like to install each package independently run the following commands:
+
   - Numpy
       - ```conda install -c anaconda numpy```
   - Scipy
