@@ -68,7 +68,7 @@ optional arguments:
   -j JSON, --json JSON  optional json model for keras models
 ```
 ### Converting An Example
-```python nnvmt.py -i ...nnvmt/testing/neural_network_information_13 -o ...nnvmt/examples -t Sherlock -f onnx```
+```python nnvmt.py -i original_networks/ACASXU_run2a_4_3_batch_2000.nnet -o translated_networks/ -t nnet -f mat```
 
 The output obtained is saved as a .mat file containing the following:
 - **W**: weight matrices
