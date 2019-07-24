@@ -55,19 +55,16 @@ class TestNNVMT(unittest.TestCase):
                     #assert that any other filename throws a Name Error
                     else:
                         self.assertRaises(NameError,decideTool,toolname,path)
-        finally:
-            print("------------------------------------------")
-            print("Finished Testing decideTool Function")
-            print("------------------------------------------")            
+        finally:         
             file.close()
 
     #test case that tests the main functionality of nnvmt
     def test_parseHandler(self):
-        print("Starting tests for nnvmt tool")
         #open the tests text file
         test_path=os.path.join(os.getcwd(),"tests/parse_handler_tests.txt")
         file = open(test_path, "r") 
         line=True
+        count=0
         try:
             #read the test file line by line
             while line:
@@ -75,14 +72,18 @@ class TestNNVMT(unittest.TestCase):
                 tup=line.split(",")
                 #if the length of the list is 4, its either a nnet, sherlock, or keras file
                 if len(tup)==4:
-                    #assert that a file was created in the specified output directory
+                    count+=1
                     input_path=os.path.join(os.getcwd(),tup[0])
                     output_path=os.path.join(os.getcwd(),tup[1])
-                    printer=parseHandler(tup[2],tup[3],input_path,output_path,' ')
-                    self.assertTrue(path.exists(printer.final_output_path))
-                 #if the length of the list is 5 then its either a keras file with a .json file or a tensorflow file
+                    printer=parseHandler(tup[2],tup[3],input_path,output_path,'')
+                #if the length of the list is 5 then its either a keras file with a .json file or a tensorflow file
                 elif len(tup)==5:
-                    print(tup)
+                    count+=1
+                    input_path=os.path.join(os.getcwd(),tup[0])
+                    output_path=os.path.join(os.getcwd(),tup[1])
+                    printer=parseHandler(tup[2],tup[3],input_path,output_path,tup[4])
+                #assert that a file was created in the specified output directory
+                self.assertTrue(path.exists(printer.final_output_path))
         finally:
             file.close()
         

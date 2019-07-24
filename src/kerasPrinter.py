@@ -39,10 +39,11 @@ class kerasPrinter(NeuralNetParser):
         #if a weight file was not specified use the first style parser 
         #otherwise use the second style of parser
         if not vals:
-            self.parse_nn_wout_json(self.pathToOriginalFile)
+            self.final_output_path=self.parse_nn_wout_json(self.pathToOriginalFile)
         else:
             self.jsonFile=vals[0]
-            self.parse_nn(self.jsonFile,self.pathToOriginalFile)
+            self.final_output_path=self.parse_nn(self.jsonFile,self.pathToOriginalFile)
+        self.originalFile.close()
             
 
     #function for creating the matfile
@@ -165,6 +166,7 @@ class kerasPrinter(NeuralNetParser):
     def save_nnmat_file(self,model,ni,no,nls,n,lsize,W,b,lys,lfs):
         nn1 = dict({'W':W,'b':b,'act_fcns':lfs})
         sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"),  nn1)
+        return os.path.join(self.outputFilePath, self.originalFilename+".mat")
     
     # parse the nn imported from keras as json and h5 files
     def parse_nn(self, modelfile,weightsfile):
@@ -174,7 +176,7 @@ class kerasPrinter(NeuralNetParser):
         #lfs = self.fix_activations(lys,lfs)
         [lsize,n,nls] = self.get_neurons(model,nl)
         [W,b] = self.get_parameters(model,nl,nls)
-        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
+        return self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
         
     def parse_nn_wout_json(self, modelfile):
         model = models.load_model(modelfile)
@@ -183,4 +185,4 @@ class kerasPrinter(NeuralNetParser):
         #lfs = self.fix_activations(lys,lfs)
         [lsize,n,nls] = self.get_neurons(model,nl)
         [W,b] = self.get_parameters(model,nl,nls)
-        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
+        return self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)

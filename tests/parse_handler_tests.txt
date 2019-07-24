@@ -2,3 +2,5 @@ original_networks/ACASXU_run2a_4_3_batch_2000.nnet, translated_networks, Reluple
 original_networks/ACASXU_run2a_5_8_batch_2000.nnet, translated_networks, Reluplex, mat
 original_networks/neural_network_information_2, translated_networks, Sherlock, mat
 original_networks/neural_network_information_13, translated_networks, Sherlock, mat
+original_networks/MC_16sigX16sigX1tanh.h5, translated_networks, Keras, mat
+original_networks/CartPole_Controller.h5, translated_networks, Keras, mat, original_networks/CartPole_Controller.json 

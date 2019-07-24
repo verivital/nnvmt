@@ -131,12 +131,14 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
             printer=kerasPrinter(inputPath,outputpath,jsonFile)
         else: 
             print("Error: Unrecognized Keras Json format. Expected filename extension is .json")
+            printer=None
     elif(toolName=="Keras" and outputFormat=="onnx"):
         raise NotImplementedError("Sorry. Still developping Keras to Onnx printer.")
     elif (toolName=="mat" and outputFormat=="tf"):
-        Tf_eran_printer(inputPath,outputpath)
+        printer=Tf_eran_printer(inputPath,outputpath)
     else:
         print(toolName,outputFormat)
+        printer=None
     return printer
         
     
