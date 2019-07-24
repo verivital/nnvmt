@@ -51,7 +51,8 @@ class TensorflowPrinter(NeuralNetParser):
             for i in w:
                 if 'optimization' not in i.name:
                     if 'action-exploration' not in i.name:
-                        a.append(i)
+                        if 'gradient' not in i.name:
+                            a.append(i)
                         #v_names.append(i.name)
             w = sess.run(a) # convert the list of tf variables of w to np arrays
             w1 = sess.graph.get_operations() #gets all the operations done in the network
@@ -81,9 +82,10 @@ class TensorflowPrinter(NeuralNetParser):
                 names.append(w1[i].name)
                 inp.append(w1[i].node_def.input)
             elif 'MatMul' == w1[i].type:
-                lys.append(w1[i].type)
-                names.append(w1[i].name)
-                inp.append(w1[i].node_def.input)
+                if w1[i+2].type not in ['Sigmoid','Relu','Tanh','Softmax']:
+                    lys.append(w1[i].type)
+                    names.append(w1[i].name)
+                    inp.append(w1[i].node_def.input)
             elif 'Softmax' == w1[i].type:
                 lys.append(w1[i].type)
                 names.append(w1[i].name)
