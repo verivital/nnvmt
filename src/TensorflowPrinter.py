@@ -51,8 +51,7 @@ class TensorflowPrinter(NeuralNetParser):
             for i in w:
                 if 'optimization' not in i.name:
                     if 'action-exploration' not in i.name:
-                        if 'gradient' not in i.name:
-                            a.append(i)
+                        a.append(i)
                         #v_names.append(i.name)
             w = sess.run(a) # convert the list of tf variables of w to np arrays
             w1 = sess.graph.get_operations() #gets all the operations done in the network
@@ -60,7 +59,8 @@ class TensorflowPrinter(NeuralNetParser):
             for i in w1:
                 if 'optimization' not in i.name:
                     if 'initial' not in i.name:
-                        a.append(i)
+                        if 'gradient' not in i.name:
+                            a.append(i)
         sess.close()    
         return w,a    
     
