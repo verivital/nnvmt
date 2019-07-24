@@ -111,13 +111,11 @@ def decideOutput(name):
 def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
     if(toolName=="Reluplex" and outputFormat=="mat"):
         printer=reluplexPrinter(inputPath,outputpath)
-        printer.saveMatfile()
     elif(toolName=="Reluplex" and outputFormat=="onnx"):
         printer=reluplexPrinter(inputPath,outputpath)
         printer.create_onnx_model()
     elif(toolName=="Sherlock" and outputFormat=="mat"):
         printer=sherlockPrinter(inputPath,outputpath)
-        printer.saveMatfile()
     elif(toolName=="Sherlock" and outputFormat=="onnx"):
         printer=sherlockPrinter(inputPath,outputpath)
         printer.create_onnx_model()
@@ -139,6 +137,7 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
         Tf_eran_printer(inputPath,outputpath)
     else:
         print(toolName,outputFormat)
+    return printer
         
     
 

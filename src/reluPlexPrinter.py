@@ -23,6 +23,8 @@ class reluplexPrinter(NeuralNetParser):
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
         self.create_matfile()
+        self.final_output_path=self.saveMatfile()
+        self.originalFile.close()
         
     def  create_onnx_model(self):
         model_def=self.createReluplexOnnx(self.network_weight_matrices,self.network_bias_matrices,self.layer_sizes)
@@ -32,6 +34,7 @@ class reluplexPrinter(NeuralNetParser):
     def saveMatfile(self):
         path=os.path.join(self.outputFilePath,self.originalFilename+".mat")
         sio.savemat(path,self.matDict)
+        return path
         
 
     def create_matfile(self):
