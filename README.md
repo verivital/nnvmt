@@ -14,25 +14,19 @@ To install the dependencies run the following command:
 ``` pip install --user -r requirements.txt```
 
 Alternatively, if you would like to install each package independently run the following commands:
-
-  - Numpy
-      - ```conda install -c anaconda numpy```
-  - Scipy
-      - ```conda install -c anaconda scipy```
-  - Keras
-      - ```conda install -c anaconda keras``` 
-  - h5py
-     - ```conda install -c anaconda h5py```
-  - Pathlib
-     - ```conda install -c menpo pathlib``` 
-  - ONNX
-     - ```pip install onnx``` 
-  - Tensorflow
-     - ```pip install tensorflow```
+  - Numpy:      ```conda install -c anaconda numpy```
+  - Scipy:      ```conda install -c anaconda scipy```
+  - Keras:      ```conda install -c anaconda keras``` 
+  - h5py:       ```conda install -c anaconda h5py```
+  - Pathlib:    ```conda install -c menpo pathlib``` 
+  - ONNX:       ```pip install onnx``` 
+  - Tensorflow: ```pip install tensorflow```
 ### Linux
 - make sure you have installed [TkInter](https://wiki.python.org/moin/TkInter)
   - if you have anaconda run:
         ```conda install -c anaconda tk``` or ```sudo apt-get install python-tk ```
+### To test your installation and perform unit tests kindly run the following command:
+```python -m unittest -q test_nnvmt ```
 ## Parsers available for neural networks created in the following libraries:
 - [Keras (Tensorflow backend)](https://keras.io/)
 - [Tensorflow](https://www.tensorflow.org/)
