@@ -14,7 +14,8 @@ class Tf_eran_printer(NeuralNetParser):
             self.pathToOriginalFile=pathToOriginalFile
             self.originalFile=open(pathToOriginalFile,"r")
             self.outputFilePath=OutputFilePath
-            self.print_tf_file(pathToOriginalFile,OutputFilePath)
+            self.final_output_path=self.print_tf_file(pathToOriginalFile,OutputFilePath)
+            self.originalFile.close()
         else: 
             print("error: to print into the .tf format please provide a matfile")
     
@@ -46,6 +47,7 @@ class Tf_eran_printer(NeuralNetParser):
             else:
                 f.write(np.array2string(np.array([biases[i]]),separator=', ',max_line_width=1000000).replace('\n', '')+"\n"+"\n")
         f.close()
+        return os.path.join(self.outputFilePath,self.originalFilename+".tf")
 
 
         

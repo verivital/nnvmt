@@ -21,8 +21,6 @@ from src.nnvmt_exceptions import FileExtenstionError
 from src.nnvmt_exceptions import OutputFormatError
 #from src.onnxPrinter import onnxPrinter
 
-
-
 #function that gets input format from the user
 def commandLineInterface():
     #create a commmand line tool for NNMT using argparse 
@@ -119,7 +117,6 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
         printer.create_onnx_model()
     elif(toolName=="Tensorflow" and outputFormat=="mat"):
         printer=TensorflowPrinter(inputPath,outputpath,jsonFile)
-        #printer.saveMatfile()
     elif(toolName=="Keras" and outputFormat=="mat"):
         #check the json file
         checkNum=checkJson(jsonFile)
