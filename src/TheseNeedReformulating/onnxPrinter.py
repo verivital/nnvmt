@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jul 21 17:20:28 2019
+Neural Network Verification Model Translation Tool (NNVMT)
 
-@author: Diego Manzanas
+@author: 
+  Patrick Musau(patrick.musau@vanderbilt.edu) 
+  Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
 
 from __future__ import division, print_function, unicode_literals

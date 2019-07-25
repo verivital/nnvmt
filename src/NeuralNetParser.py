@@ -3,7 +3,9 @@
 """
 Created on Thu Nov  1 19:44:37 2018
 
-@author: Musau
+@author: 
+  Patrick Musau(patrick.musau@vanderbilt.edu) 
+  Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
 
 

@@ -1,13 +1,11 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue May 28 16:01:50 2019
+Neural Network Verification Model Translation Tool (NNVMT)
 
-@author: manzand
-
-This file takes as input a neural network in onnx format and converts it to
-a mat file using tensorflow.
-
-https://stackoverflow.com/questions/46127471/how-to-get-weights-from-pb-model-in-tensorflow
+@author: 
+  Patrick Musau(patrick.musau@vanderbilt.edu) 
+  Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
 import onnx
 import tensorflow as tf

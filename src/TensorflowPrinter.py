@@ -2,7 +2,9 @@
 """
 Created on Wed Mar 20 11:49:27 2019
 
-@author: manzand
+@author: 
+  Patrick Musau(patrick.musau@vanderbilt.edu) 
+  Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
 
 from __future__ import division, print_function, unicode_literals

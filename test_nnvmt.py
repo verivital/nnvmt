@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Neural Network Verification Model Translation Tool (NNVMT)
+
+@author: 
+  Patrick Musau(patrick.musau@vanderbilt.edu) 
+  Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
+"""
+
 import unittest
 from nnvmt import parseArguments
 from nnvmt import decideTool
