@@ -146,7 +146,7 @@ class kerasPrinter(NeuralNetParser):
                 i = i+1
             elif lys[i]=='Dense':
                 W.append(np.float64(w[2*j].T))
-                b.append(np.float64(w[2*j+1]))
+                b.append(np.float64(w[2*j+1].T))
                 j = j+1
                 i = i+1
             else:
