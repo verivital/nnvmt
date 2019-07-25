@@ -128,7 +128,7 @@ class TensorflowPrinter(NeuralNetParser):
         b = [] # bias
         for i in range(int(len(w)/2)):
             W.append(np.float64(w[2*i].T))
-            b.append(np.float64(w[2*i+1]))
+            b.append(np.float64(w[2*i+1].T))
         return W,b,
         
     # establish the connections from layer to layer
