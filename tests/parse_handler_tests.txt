@@ -31,6 +31,8 @@ original_networks/Sherlock/neural_network_information_7, translated_networks, Sh
 original_networks/Sherlock/neural_network_information_8, translated_networks, Sherlock, mat
 original_networks/Sherlock/neural_network_information_9, translated_networks, Sherlock, mat
 original_networks/MC_16sigX16sigX1tanh.h5, translated_networks, Keras, mat
-original_networks/CartPole_Controller.h5, translated_networks, Keras, mat, original_networks/CartPole_Controller.json 
+original_networks/CartPole_Controller.h5, translated_networks, Keras, mat, original_networks/CartPole_Controller.json
+original_networks/MC_16sigX16sigX1tanh.h5, translated_networks, Keras, onnx
+original_networks/CartPole_Controller.h5, translated_networks, Keras, onnx, original_networks/CartPole_Controller.json  
 original_networks/2000model.mat, translated_networks, mat, tf
 
