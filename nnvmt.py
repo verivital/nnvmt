@@ -17,7 +17,6 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from src.nnvmt_handlers import decideTool
 from src.nnvmt_handlers import decideOutput
 from src.nnvmt_handlers import parseHandler
-#from src.onnxPrinter import onnxPrinter
 
 #function that gets input format from the user
 def commandLineInterface():
