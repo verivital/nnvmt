@@ -98,6 +98,26 @@ def checkJson(filepath):
             return 0
     else:
         return 2
+
+
+#function that chooses which printer to use for keras
+def chooseKeras(toolname,printer):
+    if toolname=="mat":
+        printer.create_matfile()
+    elif toolname=="onnx":
+        printer.create_onnx_model()
+#function that performs Keras printing 
+def kerasPrinting(checkNum, inputPath, outputpath, jsonFile,toolname):
+    if(checkNum==2):
+        printer=kerasPrinter(inputPath,outputpath)
+        chooseKeras(toolname,printer)
+    elif(checkNum==1):
+        printer=kerasPrinter(inputPath,outputpath,jsonFile)
+        chooseKeras(toolname,printer)
+    else: 
+        print("Error: Unrecognized Keras Json format. Expected filename extension is .json")
+        printer=None
+    return printer
     
 #function that decides what the output file should be
 def decideOutput(name):
@@ -109,7 +129,6 @@ def decideOutput(name):
         outputType="tf"
     else:
         raise OutputFormatError("Error: Unrecognized output format. Output formats currently supported (Onnx, Mat)")
-        outputType=None
     return outputType
 
 #function that hadles the parsing and printing
@@ -131,15 +150,11 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
     elif(toolName=="Keras" and outputFormat=="mat"):
         #check the json file
         checkNum=checkJson(jsonFile)
-        if(checkNum==2):
-            printer=kerasPrinter(inputPath,outputpath)
-        elif(checkNum==1):
-            printer=kerasPrinter(inputPath,outputpath,jsonFile)
-        else: 
-            print("Error: Unrecognized Keras Json format. Expected filename extension is .json")
-            printer=None
+        printer=kerasPrinting(checkNum, inputPath, outputpath, jsonFile,"mat")
     elif(toolName=="Keras" and outputFormat=="onnx"):
-        raise NotImplementedError("Sorry. Still developping Keras to Onnx printer.")
+        checkNum=checkJson(jsonFile)
+        printer=kerasPrinting(checkNum, inputPath, outputpath, jsonFile,"onnx")
+        #raise NotImplementedError("Sorry. Still developping Keras to Onnx printer.")
     elif (toolName=="mat" and outputFormat=="tf"):
         printer=Tf_eran_printer(inputPath,outputpath)
     else:

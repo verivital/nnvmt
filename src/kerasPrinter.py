@@ -39,25 +39,35 @@ class kerasPrinter(NeuralNetParser):
         self.pathToOriginalFile=pathToOriginalFile
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
-        #if a weight file was not specified use the first style parser 
+        #if a json file was not specified use the first style parser 
         #otherwise use the second style of parser
         if not vals:
-            self.final_output_path=self.parse_nn_wout_json(self.pathToOriginalFile)
+            self.no_json=True
         else:
+            self.no_json=False
             self.jsonFile=vals[0]
-            self.final_output_path=self.parse_nn(self.jsonFile,self.pathToOriginalFile)
-        self.originalFile.close()
             
 
     #function for creating the matfile
     def create_matfile(self):
-        pass
+        if self.no_json:
+            self.final_output_path=self.parse_nn_wout_json(self.pathToOriginalFile)
+        else:
+            self.final_output_path=self.parse_nn(self.jsonFile,self.pathToOriginalFile)
+        self.originalFile.close()
+
     #function for creating an onnx model
-    def create_onnx_model(self,model):
+    def create_onnx_model(self):
         # Convert the Keras model into ONNX
+        if self.no_json:
+            model = models.load_model(self.pathToOriginalFile)
+        else:
+            model = self.load_files(self.jsonFile,self.pathToOriginalFile) 
+        self.final_output_path=os.path.join(self.outputFilePath, self.originalFilename)+'.onnx'
         onnx_model = onnxmltools.convert_keras(model)
         # Save as protobuf
-        onnxmltools.utils.save_model(onnx_model, self.outputFilePath+'.onnx')
+        onnxmltools.utils.save_model(onnx_model, self.final_output_path)
+        self.originalFile.close()
     
     # Load the plant with parameters included
     def load_files(self, modelfile,weightsfile):
