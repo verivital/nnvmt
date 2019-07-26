@@ -22,7 +22,7 @@ Alternatively, if you would like to install each package independently run the f
   - ONNX:        ```pip install onnx``` 
   - Tensorflow:  ```pip install tensorflow```
   - onnx-tf:     ```pip install onnx-tf```
-  = onnxmltools: ```pip install onnxmltools```
+  - onnxmltools: ```pip install onnxmltools```
 ### Linux
 - make sure you have installed [TkInter](https://wiki.python.org/moin/TkInter)
   - if you have anaconda run:
