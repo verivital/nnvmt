@@ -55,12 +55,6 @@ def parseArguments(arguments):
     if(toolName and outputFormat):
         parseHandler(toolName,outputFormat,inputPath,outputPath,jsonFile)
         
-    
-    
-    
-    
-
-
 if __name__=='__main__':
     items=commandLineInterface()
     parseArguments(items)
