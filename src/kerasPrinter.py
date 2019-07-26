@@ -3,7 +3,9 @@
 """
 Neural Network Verification Model Translation Tool (NNVMT)
 
-@author: Patrick Musau(patrick.musau@vanderbilt.edu) and Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
+@author: 
+  Patrick Musau(patrick.musau@vanderbilt.edu) 
+  Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
 
 from __future__ import division, print_function, unicode_literals
@@ -12,6 +14,7 @@ import os
 from src.NeuralNetParser import NeuralNetParser
 import scipy.io as sio
 from onnx import *
+import onnxmltools
 
 import tensorflow as tf
 import h5py as h5
@@ -50,8 +53,11 @@ class kerasPrinter(NeuralNetParser):
     def create_matfile(self):
         pass
     #function for creating an onnx model
-    def create_onnx_model(self):
-        print("Sorry this is still under development")
+    def create_onnx_model(self,model):
+        # Convert the Keras model into ONNX
+        onnx_model = onnxmltools.convert_keras(model)
+        # Save as protobuf
+        onnxmltools.utils.save_model(onnx_model, self.outputFilePath+'.onnx')
     
     # Load the plant with parameters included
     def load_files(self, modelfile,weightsfile):
@@ -144,7 +150,7 @@ class kerasPrinter(NeuralNetParser):
                 i = i+1
             elif lys[i]=='Dense':
                 W.append(np.float64(w[2*j].T))
-                b.append(np.float64(w[2*j+1].T))
+                b.append(np.float64(w[2*j+1].reshape(-1,1)))
                 j = j+1
                 i = i+1
             else:

@@ -2,7 +2,7 @@
 class Error(Exception):
     """Base class for other exceptions"""
     pass
-class FileExtenstionError(Error):
+class FileExtensionError(Error):
     """Raised when the file extension is invalid"""
     pass
 class OutputFormatError(Error):

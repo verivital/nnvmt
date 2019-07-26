@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Sep  3 10:33:40 2018
+Neural Network Verification Model Translation Tool (NNVMT)
 
-@author: manzand
+@author: 
+  Patrick Musau(patrick.musau@vanderbilt.edu) 
+  Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
 
 import time
