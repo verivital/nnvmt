@@ -18,8 +18,9 @@ from src.reluPlexPrinter import reluplexPrinter
 from src.sherlockPrinter import sherlockPrinter
 from src.kerasPrinter import kerasPrinter
 from src.TensorflowPrinter import TensorflowPrinter
+from src.onnxPrinter import onnxPrinter
 from src.tf_eran_printer import Tf_eran_printer
-from src.nnvmt_exceptions import FileExtenstionError
+from src.nnvmt_exceptions import FileExtensionError
 from src.nnvmt_exceptions import OutputFormatError
 #from src.onnxPrinter import onnxPrinter
 
@@ -52,30 +53,36 @@ def decideTool(name,inputPath):
         if('.nnet' in basename):
             fileType="Reluplex"
         else:
-            raise FileExtenstionError("Error: Unrecognized Neural Network File Format (Kyle Julian 2016). Expected filename extension .nnet")
+            raise FileExtensionError("Error: Unrecognized Neural Network File Format (Kyle Julian 2016). Expected filename extension .nnet")
     elif name=="Sherlock" or name=="sherlock":
         #check to see if the input file ends in .txt or nothing
         if(".txt" in basename or len(basename.split("."))==1): 
             fileType="Sherlock"
         else:
-            raise FileExtenstionError("Error: Unrecognized Sherlock format. Expected filename extension .txt or nothing")
+            raise FileExtensionError("Error: Unrecognized Sherlock format. Expected filename extension .txt or nothing")
     elif name=="Keras" or name=="keras":
         #check to see if the files provided are correct
         if('.h5' in basename):
             fileType="Keras"
         else:
-            raise FileExtenstionError("Error: Unrecognized Keras format. Expected filename extension is .h5")
+            raise FileExtensionError("Error: Unrecognized Keras format. Expected filename extension is .h5")
     elif name =="Tensorflow" or name == "tensorflow":
         #check to see if the files provided are correct
         if('.meta' in basename):
             fileType="Tensorflow"
         else:
-            raise FileExtenstionError("Error: Unrecognized Tensorflow format. Expected filename extension is .meta")
+            raise FileExtensionError("Error: Unrecognized Tensorflow format. Expected filename extension is .meta")
+    elif name == 'ONNX' or name == 'onnx':
+        #check to see if the provided files are correct
+        if ('.onnx' in basename):
+            fileType = 'ONNX'
+        else:
+            raise FileExtensionError("Error: Unrecognized ONNX format. Expected filename extension is .onnx")
     elif name=="mat" or name=="Matfile":
         if('.mat' in basename):
             fileType="mat"
         else:
-            raise FileExtenstionError("Error: Unrecognized Matfile format. Expected filename extension is .mat")
+            raise FileExtensionError("Error: Unrecognized Matfile format. Expected filename extension is .mat")
     else:
         raise NameError("Error: Unrecognized input format. Tools currently supported (Reluplex, Sherlock)")
     return fileType
@@ -119,6 +126,8 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
         printer.create_onnx_model()
     elif(toolName=="Tensorflow" and outputFormat=="mat"):
         printer=TensorflowPrinter(inputPath,outputpath,jsonFile)
+    elif(toolName=="ONNX" and outputFormat=='.mat'):
+        printer=onnxPrinter(inputPath,outputpath)
     elif(toolName=="Keras" and outputFormat=="mat"):
         #check the json file
         checkNum=checkJson(jsonFile)
