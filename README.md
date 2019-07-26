@@ -14,13 +14,15 @@ To install the dependencies run the following command:
 ``` pip install --user -r requirements.txt```
 
 Alternatively, if you would like to install each package independently run the following commands:
-  - Numpy:      ```conda install -c anaconda numpy```
-  - Scipy:      ```conda install -c anaconda scipy```
-  - Keras:      ```conda install -c anaconda keras``` 
-  - h5py:       ```conda install -c anaconda h5py```
-  - Pathlib:    ```conda install -c menpo pathlib``` 
-  - ONNX:       ```pip install onnx``` 
-  - Tensorflow: ```pip install tensorflow```
+  - Numpy:       ```conda install -c anaconda numpy```
+  - Scipy:       ```conda install -c anaconda scipy```
+  - Keras:       ```conda install -c anaconda keras``` 
+  - h5py:        ```conda install -c anaconda h5py```
+  - Pathlib:     ```conda install -c menpo pathlib``` 
+  - ONNX:        ```pip install onnx``` 
+  - Tensorflow:  ```pip install tensorflow```
+  - onnx-tf:     ```pip install onnx-tf```
+  - onnxmltools: ```pip install onnxmltools```
 ### Linux
 - make sure you have installed [TkInter](https://wiki.python.org/moin/TkInter)
   - if you have anaconda run:
@@ -30,6 +32,7 @@ Alternatively, if you would like to install each package independently run the f
 ## Parsers available for neural networks created in the following libraries:
 - [Keras (Tensorflow backend)](https://keras.io/)
 - [Tensorflow](https://www.tensorflow.org/)
+- [ONNX](https://onnx.ai/)
 ## Verification Tools Currently Supported
 - [Reluplex](https://github.com/guykatzz/ReluplexCav2017)
 - [Sherlock](https://github.com/souradeep-111/sherlock)
@@ -59,7 +62,7 @@ optional arguments:
   -f OUTPUTFORMAT, --format OUTPUTFORMAT
                         output format to be translated to default: matfile
                         (.mat)
-  -j JSON, --json JSON  optional json model for keras models
+  -j JSON, --json JSON  checkpoint file for Tensorflow models and optional json model for keras models
 ```
 ### Converting An Example
 ```python nnvmt.py -i original_networks/ACASXU_run2a_4_3_batch_2000.nnet -o translated_networks/ -t nnet -f mat```
@@ -73,7 +76,8 @@ To convert into the formats of other tools such as [Caffe2](https://caffe2.ai/do
 
 ## Repository Organization
 - src: contains the code for translating the models
-- examples: contains several input format types that one can use to test out the tool
+- original_networks: contains several input format types that one can use to test out the tool
+- translated_networks: contains several neural networks that have been translated using nnvmt
 - tests: contains text files with test cases for unit testing
 - ONNX: a collection of neural network models stored in the ONNX format
 ## Contact
