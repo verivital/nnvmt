@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Nov  2 13:50:54 2018
+Neural Network Verification Model Translation Tool (NNVMT)
 
-@author: musaup
+@author: 
+  Patrick Musau(patrick.musau@vanderbilt.edu) 
+  Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
 
 from __future__ import division, print_function, unicode_literals, absolute_import
@@ -23,13 +25,14 @@ class sherlockPrinter(NeuralNetParser):
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
         self.network_weight_matrices, self.network_bias_matrices,self.info_dict=self.create_matfile()
+        self.final_output_path=self.saveMatfile()
         self.originalFile.close()
         
 
     #function to save the matfiles with the network weights
     def saveMatfile(self):
-        self.save_mat_file(self.info_dict,self.network_weight_matrices,self.network_bias_matrices,self.outputFilePath, self.originalFilename)
-        
+        save_path=self.save_mat_file(self.info_dict,self.network_weight_matrices,self.network_bias_matrices,self.outputFilePath, self.originalFilename)
+        return save_path
     #create an onnx model using the matfiles created by create_matfile  
     def  create_onnx_model(self):
         #TO DO IMPLEMENT THIS
@@ -52,6 +55,7 @@ class sherlockPrinter(NeuralNetParser):
             info_dict=self.get_network_info(record)
             nn_mat=self.create_nn_matrices(info_dict,record)
         network_weight_matrices, network_bias_matrices=self.create_matfile_matrix_dict(nn_mat)
+        record.close()
         return network_weight_matrices, network_bias_matrices, info_dict
     
     #function that handles the creation of a sherlock Onnx model
@@ -211,7 +215,7 @@ class sherlockPrinter(NeuralNetParser):
         NN_matrix_dict['b']=network_bias_matrices
         path=os.path.join(directory_name,file_name+".mat")
         sio.savemat(path,NN_matrix_dict)
-        return NN_matrix_dict
+        return path
         
     
     def decide_which_file_type(self, record):

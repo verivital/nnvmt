@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jan 15 19:06:19 2019
+Neural Network Verification Model Translation Tool (NNVMT)
 
-@author: Musau
+@author: 
+  Patrick Musau(patrick.musau@vanderbilt.edu) 
+  Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
 
 from __future__ import division, print_function, unicode_literals
@@ -12,6 +14,7 @@ import os
 from src.NeuralNetParser import NeuralNetParser
 import scipy.io as sio
 from onnx import *
+import onnxmltools
 
 import tensorflow as tf
 import h5py as h5
@@ -36,21 +39,35 @@ class kerasPrinter(NeuralNetParser):
         self.pathToOriginalFile=pathToOriginalFile
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
-        #if a weight file was not specified use the first style parser 
+        #if a json file was not specified use the first style parser 
         #otherwise use the second style of parser
         if not vals:
-            self.parse_nn_wout_json(self.pathToOriginalFile)
+            self.no_json=True
         else:
+            self.no_json=False
             self.jsonFile=vals[0]
-            self.parse_nn(self.jsonFile,self.pathToOriginalFile)
             
 
     #function for creating the matfile
     def create_matfile(self):
-        pass
+        if self.no_json:
+            self.final_output_path=self.parse_nn_wout_json(self.pathToOriginalFile)
+        else:
+            self.final_output_path=self.parse_nn(self.jsonFile,self.pathToOriginalFile)
+        self.originalFile.close()
+
     #function for creating an onnx model
     def create_onnx_model(self):
-        print("Sorry this is still under development")
+        # Convert the Keras model into ONNX
+        if self.no_json:
+            model = models.load_model(self.pathToOriginalFile)
+        else:
+            model = self.load_files(self.jsonFile,self.pathToOriginalFile) 
+        self.final_output_path=os.path.join(self.outputFilePath, self.originalFilename)+'.onnx'
+        onnx_model = onnxmltools.convert_keras(model)
+        # Save as protobuf
+        onnxmltools.utils.save_model(onnx_model, self.final_output_path)
+        self.originalFile.close()
     
     # Load the plant with parameters included
     def load_files(self, modelfile,weightsfile):
@@ -143,7 +160,7 @@ class kerasPrinter(NeuralNetParser):
                 i = i+1
             elif lys[i]=='Dense':
                 W.append(np.float64(w[2*j].T))
-                b.append(np.float64(w[2*j+1].T))
+                b.append(np.float64(w[2*j+1].reshape(-1,1)))
                 j = j+1
                 i = i+1
             else:
@@ -165,6 +182,7 @@ class kerasPrinter(NeuralNetParser):
     def save_nnmat_file(self,model,ni,no,nls,n,lsize,W,b,lys,lfs):
         nn1 = dict({'W':W,'b':b,'act_fcns':lfs})
         sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"),  nn1)
+        return os.path.join(self.outputFilePath, self.originalFilename+".mat")
     
     # parse the nn imported from keras as json and h5 files
     def parse_nn(self, modelfile,weightsfile):
@@ -174,7 +192,7 @@ class kerasPrinter(NeuralNetParser):
         #lfs = self.fix_activations(lys,lfs)
         [lsize,n,nls] = self.get_neurons(model,nl)
         [W,b] = self.get_parameters(model,nl,nls)
-        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
+        return self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
         
     def parse_nn_wout_json(self, modelfile):
         model = models.load_model(modelfile)
@@ -183,4 +201,4 @@ class kerasPrinter(NeuralNetParser):
         #lfs = self.fix_activations(lys,lfs)
         [lsize,n,nls] = self.get_neurons(model,nl)
         [W,b] = self.get_parameters(model,nl,nls)
-        self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
+        return self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
