@@ -21,10 +21,9 @@ from onnx_tf.backend import prepare
 
 #abstract class for ONNX printers
 class onnxPrinter(NeuralNetParser):
-    #Instantiate files and create a matfile
+    #function for creating the matfile
+    #get the name of the file without the end extension
     def __init__(self,pathToOriginalFile, OutputFilePath,*vals):
-        #function for creating the matfile
-        #get the name of the file without the end extension
         filename = os.path.basename(os.path.normpath(pathToOriginalFile))
         filename=filename.replace('.onnx','')
         #save the filename and path to file as a class variable
@@ -33,11 +32,11 @@ class onnxPrinter(NeuralNetParser):
         self.pathToOriginalFile=pathToOriginalFile
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
-        self.parse_nn(pathToOriginalFile)
     
     #function for creating the matfile
     def create_matfile(self):
-        pass
+        self.final_output_path=os.path.join(self.outputFilePath, self.originalFilename+".mat")
+        self.parse_nn(self.pathToOriginalFile,self.final_output_path)
 
     # Load ONNX model
     def load_model(self,input_path):

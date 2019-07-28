@@ -24,26 +24,32 @@ class sherlockPrinter(NeuralNetParser):
         self.pathToOriginalFile=pathToOriginalFile
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
-        self.network_weight_matrices, self.network_bias_matrices,self.info_dict=self.create_matfile()
-        self.final_output_path=self.saveMatfile()
-        self.originalFile.close()
+       
         
 
     #function to save the matfiles with the network weights
     def saveMatfile(self):
         save_path=self.save_mat_file(self.info_dict,self.network_weight_matrices,self.network_bias_matrices,self.outputFilePath, self.originalFilename)
         return save_path
-    #create an onnx model using the matfiles created by create_matfile  
-    def  create_onnx_model(self):
+    
+    #TO DO: create an onnx model using the matfiles created by create_matfile  
+    def create_onnx_model(self):
         #TO DO IMPLEMENT THIS
         model_def=self.createSherlockOnnx(self.network_weight_matrices,self.network_bias_matrices,self.info_dict['layer_sizes'])
         new_model_path = os.path.join(self.outputFilePath, self.originalFilename)
         onnx.save(model_def, new_model_path+".onnx")
         
-        
+
+    #function to create and save sherlock model files
+    def create_matfile(self):
+        self.network_weight_matrices, self.network_bias_matrices,self.info_dict=self.construct_matfile()
+        self.final_output_path=self.saveMatfile()
+        self.originalFile.close()
+
+
     
 
-    def create_matfile(self):
+    def construct_matfile(self):
         record=self.originalFile
         self.file_type=self.decide_which_file_type(record)
         if(self.file_type):

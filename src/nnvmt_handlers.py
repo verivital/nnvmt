@@ -8,6 +8,9 @@ Neural Network Verification Model Translation Tool (NNVMT)
   Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
 import os
+import warnings 
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 from src.reluPlexPrinter import reluplexPrinter
 from src.sherlockPrinter import sherlockPrinter
 from src.kerasPrinter import kerasPrinter
@@ -108,18 +111,21 @@ def decideOutput(name):
 def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
     if(toolName=="Reluplex" and outputFormat=="mat"):
         printer=reluplexPrinter(inputPath,outputpath)
+        printer.create_matfile()
     elif(toolName=="Reluplex" and outputFormat=="onnx"):
         printer=reluplexPrinter(inputPath,outputpath)
         printer.create_onnx_model()
     elif(toolName=="Sherlock" and outputFormat=="mat"):
         printer=sherlockPrinter(inputPath,outputpath)
+        printer.create_matfile()
     elif(toolName=="Sherlock" and outputFormat=="onnx"):
         printer=sherlockPrinter(inputPath,outputpath)
         printer.create_onnx_model()
     elif(toolName=="Tensorflow" and outputFormat=="mat"):
         printer=TensorflowPrinter(inputPath,outputpath,jsonFile)
-    elif(toolName=="ONNX" and outputFormat=='.mat'):
+    elif(toolName=="ONNX" and outputFormat=='mat'):
         printer=onnxPrinter(inputPath,outputpath)
+        printer.create_matfile()
     elif(toolName=="Keras" and outputFormat=="mat"):
         #check the json file
         checkNum=checkJson(jsonFile)
@@ -131,6 +137,6 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
     elif (toolName=="mat" and outputFormat=="tf"):
         printer=Tf_eran_printer(inputPath,outputpath)
     else:
-        print(toolName,outputFormat)
+        print("Internal Handling Error: ",toolName,outputFormat)
         printer=None
     return printer
