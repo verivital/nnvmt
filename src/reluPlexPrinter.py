@@ -35,7 +35,8 @@ class reluplexPrinter(NeuralNetParser):
     #function to create and save matfile
     def create_matfile(self):
         self.construct_matfile()
-        self.final_output_path=self.saveMatfile()    
+        self.final_output_path=self.saveMatfile()  
+        self.originalFile.close()  
 
     #helper function for create_matfile
     def saveMatfile(self):

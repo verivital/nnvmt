@@ -7,16 +7,20 @@ Neural Network Verification Model Translation Tool (NNVMT)
   Patrick Musau(patrick.musau@vanderbilt.edu) 
   Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
-
+import os
+from os import path
 import unittest
+import warnings 
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 from nnvmt import parseArguments
 from nnvmt import decideTool
 from nnvmt import decideOutput
 from nnvmt import parseHandler
 from src.nnvmt_exceptions import FileExtensionError
 from src.nnvmt_exceptions import OutputFormatError
-import os
-from os import path
+
 
 #class that implements unit tests for our tool
 class TestNNVMT(unittest.TestCase):

@@ -12,6 +12,8 @@ from __future__ import print_function
 import argparse
 import os
 import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 os.environ['KMP_WARNINGS'] = 'FALSE'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from tensorflow.python.util import deprecation

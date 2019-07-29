@@ -37,6 +37,7 @@ class onnxPrinter(NeuralNetParser):
     def create_matfile(self):
         self.final_output_path=os.path.join(self.outputFilePath, self.originalFilename+".mat")
         self.parse_nn(self.pathToOriginalFile,self.final_output_path)
+        self.originalFile.close()
 
     # Load ONNX model
     def load_model(self,input_path):

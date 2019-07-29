@@ -137,6 +137,6 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
     elif (toolName=="mat" and outputFormat=="tf"):
         printer=Tf_eran_printer(inputPath,outputpath)
     else:
-        print("Internal Handling Error: ",toolName,outputFormat)
+        print("Internal Handling Error: ",toolName,outputFormat,inputPath,outputpath)
         printer=None
     return printer

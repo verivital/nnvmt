@@ -9,8 +9,6 @@ original_networks/Reluplex/ACASXU_run2a_1_6_batch_2000.nnet, translated_networks
 original_networks/Reluplex/ACASXU_run2a_1_7_batch_2000.nnet, translated_networks, Reluplex, mat
 original_networks/Reluplex/ACASXU_run2a_1_8_batch_2000.nnet, translated_networks, Reluplex, mat
 original_networks/Reluplex/ACASXU_run2a_1_9_batch_2000.nnet, translated_networks, Reluplex, mat
-original_networks/Reluplex/ACASXU_run2a_2_1_batch_2000.nnet, translated_networks, Reluplex, mat
-original_networks/Reluplex/ACASXU_run2a_2_2_batch_2000.nnet, translated_networks, Reluplex, mat
 original_networks/neural_network_information_2, translated_networks, Sherlock, mat
 original_networks/neural_network_information_13, translated_networks, Sherlock, mat
 original_networks/Sherlock/neural_network_information, translated_networks, Sherlock, mat
@@ -22,8 +20,6 @@ original_networks/Sherlock/neural_network_information_12, translated_networks, S
 original_networks/Sherlock/neural_network_information_13, translated_networks, Sherlock, mat
 original_networks/Sherlock/neural_network_information_14, translated_networks, Sherlock, mat
 original_networks/Sherlock/neural_network_information_15, translated_networks, Sherlock, mat
-original_networks/Sherlock/neural_network_information_2, translated_networks, Sherlock, mat
-original_networks/Sherlock/neural_network_information_3, translated_networks, Sherlock, mat
 original_networks/Sherlock/neural_network_information_4, translated_networks, Sherlock, mat
 original_networks/Sherlock/neural_network_information_5, translated_networks, Sherlock, mat
 original_networks/Sherlock/neural_network_information_6, translated_networks, Sherlock, mat
@@ -35,4 +31,23 @@ original_networks/CartPole_Controller.h5, translated_networks, Keras, mat, origi
 original_networks/MC_16sigX16sigX1tanh.h5, translated_networks, Keras, onnx
 original_networks/CartPole_Controller.h5, translated_networks, Keras, onnx, original_networks/CartPole_Controller.json  
 original_networks/2000model.mat, translated_networks, mat, tf
+ONNX/1L_abalone_nets.onnx, translated_networks, ONNX, mat
+ONNX/1L_engine_nets.onnx, translated_networks, ONNX, mat
+ONNX/1L_heat_nets.onnx, translated_networks, ONNX, mat
+ONNX/1L_housing_nets.onnx, translated_networks, ONNX, mat
+ONNX/1L_pollution_nets.onnx, translated_networks, ONNX, mat
+ONNX/1L_valve_nets.onnx, translated_networks, ONNX, mat
+ONNX/2L_abalone_nets.onnx, translated_networks, ONNX, mat
+ONNX/2L_engine_nets.onnx, translated_networks, ONNX, mat
+ONNX/2L_heat_nets.onnx, translated_networks, ONNX, mat
+ONNX/2L_housing_nets.onnx, translated_networks, ONNX, mat
+ONNX/2L_pollution_nets.onnx, translated_networks, ONNX, mat
+ONNX/2L_valve_nets.onnx, translated_networks, ONNX, mat
+ONNX/3L_housing_nets.onnx, translated_networks, ONNX, mat
+ONNX/mnist_model_2x250.onnx, translated_networks, ONNX, mat
+ONNX/mnist_model5x50.onnx, translated_networks, ONNX, mat
+ONNX/mnist_model_7Lw141.onnx, translated_networks, ONNX, mat
+ONNX/SingleCarController.onnx, translated_networks, ONNX, mat
+ONNX/SingleCarPlant.onnx, translated_networks, ONNX, mat
+
 
