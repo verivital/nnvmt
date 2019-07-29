@@ -49,5 +49,8 @@ ONNX/mnist_model5x50.onnx, translated_networks, ONNX, mat
 ONNX/mnist_model_7Lw141.onnx, translated_networks, ONNX, mat
 ONNX/SingleCarController.onnx, translated_networks, ONNX, mat
 ONNX/SingleCarPlant.onnx, translated_networks, ONNX, mat
+original_networks/example2/example2.meta, translated_networks, Tensorflow, mat, original_networks/example2/
+original_networks/example1/example1.meta, translated_networks, Tensorflow, mat, original_networks/example1/
+
 
 

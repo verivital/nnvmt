@@ -16,8 +16,6 @@ from onnx import *
 import tensorflow as tf
 #from tensorflow.python.training import checkpoint_utils as cp
 
-# May need to uncomment it if run into errors when running multiple tf sessions
-tf.reset_default_graph()  
 
 #abstract class for keras printers
 class TensorflowPrinter(NeuralNetParser):
@@ -32,12 +30,13 @@ class TensorflowPrinter(NeuralNetParser):
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
         self.pathToCkpt = pathToCkpt
+        tf.reset_default_graph()
         
             
 
     #function for creating the matfile
     def create_matfile(self):
-        self.parse_nn(self.pathToOriginalFile,self.pathToCkpt)
+        self.final_output_path=self.parse_nn(self.pathToOriginalFile,self.pathToCkpt)
         self.originalFile.close()
     #function for creating an onnx model
     def create_onnx_model(self):
@@ -164,6 +163,7 @@ class TensorflowPrinter(NeuralNetParser):
     def save_nnmat_file(self,W,b,acts):
         nn1 = dict({'W':W,'b':b,'act_fcns':acts})
         sio.savemat(os.path.join(self.outputFilePath, self.originalFilename+".mat"), nn1)
+        return os.path.join(self.outputFilePath, self.originalFilename+".mat")
     #save_nnmat_file(Wf,bf,actsf)
     
     # parse the nn imported from keras as json and h5 files
@@ -174,6 +174,6 @@ class TensorflowPrinter(NeuralNetParser):
         [W,b] = self.get_parameters(w)
         inputs = self.layer_connections(l_names,inp_con)
         [Wf,bf,actsf] = self.reorg(inputs,W,b,acts)
-        self.save_nnmat_file(Wf,bf,actsf)
+        return self.save_nnmat_file(Wf,bf,actsf)
         
 
