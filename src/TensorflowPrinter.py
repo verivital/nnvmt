@@ -160,7 +160,7 @@ class TensorflowPrinter(NeuralNetParser):
         return W,b,acts
     
     def reshape(self,W,b):
-        if len(b[0]) != len(W[0]):
+        if len([b[0]]) != len(W[0]):
             for i in range(len(W)):
                 W[i] = W[i].T
         return W,b

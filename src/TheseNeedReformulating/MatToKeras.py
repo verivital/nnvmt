@@ -9,6 +9,7 @@ Neural Network Verification Model Translation Tool (NNVMT)
 """
 
 import numpy as np
+import os 
 from keras.models import model_from_json
 import scipy.io as sio
 from tensorflow import keras
@@ -22,14 +23,14 @@ from keras import layers
 #from keras.initializers import glorot_uniform,glorot_normal
 
 #Load mat file
-def load_mat(nn):
+def load_mat(input_path):
     W = []
     b = []
     a = []
-    mat = sio.loadmat(nn+'.mat')
+    mat = sio.loadmat(input_path)
     weight = mat['W'].reshape(1,-1)
     bias = mat['b'].reshape(1,-1)
-    act = mat['activation_fcns']
+    act = mat['act_fcns']
     for i in range(bias.size):
         W.append(weight[0][i])
         b.append(bias[0][i].reshape(-1,))
@@ -47,13 +48,16 @@ def create_nn(W,b,a):
     return model
 # model = create_nn(W,b,a)
 
-def save_model(model,nn):
-    model.save(nn+'.h5')
+def save_model(model,output_path,filename):
+    file_path=os.path.join(output_path, filename+".h5")
+    model.save(file_path)
     
-def parse_model(nn):
-    [W,b,a] = load_mat(nn)
+def parse_model(input_path,output_path):
+    basename=os.path.basename(input_path)
+    filename=basename.replace(".mat","")
+    W,b,a = load_mat(input_path)
     model = create_nn(W,b,a)
-    save_model(model,nn)
+    save_model(model,output_path,filename)
     
 
 """
@@ -64,3 +68,7 @@ IN THE OTHER PARSERS SO THAT WE ARE CONSISTENT WITH DIMENSIONS
 
 """
 
+if __name__=='__main__':
+  input_path='/home/musaup/Documents/Research/Tools/nnmt/translated_networks/ACASXU_run2a_1_1_batch_2000.mat'
+  output_path='/home/musaup/Documents/Research'
+  parse_model(input_path,output_path)

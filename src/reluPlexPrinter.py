@@ -53,7 +53,7 @@ class reluplexPrinter(NeuralNetParser):
         NN_matrix=self.create_nn_matrix(numberOfLayers,self.layer_sizes)
         NN_matrix=self.fill_NN_matrix(NN_matrix,record,numberOfLayers,self.layer_sizes)
         adict,self.network_weight_matrices, self.network_bias_matrices=self.create_matdict(NN_matrix,numberOfLayers)
-        adict1=self.create_nn_info_dict(adict,numberOfLayers, sizeOfLargestLayer, MIN, MAX, mean, range1,symmetric)
+        adict1=adict
         #adict1["layer_sizes"]=self.layer_sizes
         adict1["act_fcns"]=["relu"]*numberOfLayers
         self.matDict=adict1
@@ -193,14 +193,6 @@ class reluplexPrinter(NeuralNetParser):
         dictionary["W"]=weightsdictionary
         dictionary["b"]=biasdictionary
         return dictionary,np.asarray(weightsdictionary),np.asarray(biasdictionary)
-
-    #create dictionary that stores the basic information of the network so that it can be stored as a mat file
-    def create_nn_info_dict(self, dictionary,numberOfLayers, sizeOfLargestLayer, MIN, MAX, mean, range1,symmetric):
-        labels=['size_Of_Largest_Layer','Minimum_of_Inputs','Maximum_of_Inputs','means_for_scaling','range_for_scaling','is_symmetric']
-        items=[sizeOfLargestLayer, MIN, MAX, mean, range1,symmetric]
-        #for item in range(0,len(labels)):
-            #dictionary[labels[item]]=items[item]
-        return dictionary
     
     def fill_NN_matrix(self,NN_matrix,record,numberOfLayers,layer_sizes):
         for layer in range(0,numberOfLayers):
