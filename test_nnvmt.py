@@ -76,6 +76,8 @@ class TestNNVMT(unittest.TestCase):
     def test_parseHandler(self):
         #open the tests text file
         test_path=os.path.join(os.getcwd(),"tests/parse_handler_tests.txt")
+        if not os.path.exists("tests/unit_test_translated_networks/"):
+            os.mkdir("tests/unit_test_translated_networks/")
         file = open(test_path, "r") 
         line=True
         count=0
