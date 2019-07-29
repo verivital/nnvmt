@@ -17,6 +17,7 @@ from onnx import *
 import onnxmltools
 
 import tensorflow as tf
+if type(tf.contrib) != type(tf): tf.contrib._warning = None
 import h5py as h5
 import json
 from pprint import pprint
@@ -26,6 +27,9 @@ from keras.initializers import glorot_uniform, glorot_normal
 from keras.models import load_model
 from keras.models import model_from_json
 from keras.utils import *
+import warnings 
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 #abstract class for keras printers
 class kerasPrinter(NeuralNetParser):

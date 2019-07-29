@@ -32,12 +32,13 @@ class TensorflowPrinter(NeuralNetParser):
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
         self.pathToCkpt = pathToCkpt
-        self.parse_nn(pathToOriginalFile,pathToCkpt)
+        
             
 
     #function for creating the matfile
     def create_matfile(self):
-        pass
+        self.parse_nn(self.pathToOriginalFile,self.pathToCkpt)
+        self.originalFile.close()
     #function for creating an onnx model
     def create_onnx_model(self):
         print("Sorry this is still under development")

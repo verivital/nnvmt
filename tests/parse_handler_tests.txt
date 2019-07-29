@@ -30,7 +30,7 @@ original_networks/MC_16sigX16sigX1tanh.h5, translated_networks, Keras, mat
 original_networks/CartPole_Controller.h5, translated_networks, Keras, mat, original_networks/CartPole_Controller.json
 original_networks/MC_16sigX16sigX1tanh.h5, translated_networks, Keras, onnx
 original_networks/CartPole_Controller.h5, translated_networks, Keras, onnx, original_networks/CartPole_Controller.json  
-original_networks/2000model.mat, translated_networks, mat, tf
+original_networks/2000model.mat, translated_networks, mat, eran
 ONNX/1L_abalone_nets.onnx, translated_networks, ONNX, mat
 ONNX/1L_engine_nets.onnx, translated_networks, ONNX, mat
 ONNX/1L_heat_nets.onnx, translated_networks, ONNX, mat

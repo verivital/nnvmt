@@ -64,6 +64,24 @@ def decideTool(name,inputPath):
     return fileType
 
 
+#function that makes sure tensorflow comes with checkpoint file
+def verify_checkpoint(filepath):
+    if not filepath:
+        raise NameError("Error: Please provide the path to the checkpoint file for the tensorflow model you are attempting to load.")
+    else:
+        basename=os.path.basename(filepath)
+        if basename=="checkpoint":
+            truepath=filepath.replace(basename,"")
+        else:
+            truepath=filepath
+    listed_directory=os.listdir(truepath)
+    if "checkpoint" not in listed_directory:
+        raise NameError("Error: Please provide the path to the checkpoint file for the tensorflow model you are attempting to load.")
+    else: 
+        return truepath
+
+
+
 #function that checks if json file is correct
 def checkJson(filepath):
     if filepath:
@@ -101,8 +119,8 @@ def decideOutput(name):
         outputType="mat"
     elif name=="onnx" or name=="ONNX":
         outputType="onnx"
-    elif name=="tf" or name=="ERAN":
-        outputType="tf"
+    elif name=="eran" or name=="ERAN":
+        outputType="eran"
     else:
         raise OutputFormatError("Error: Unrecognized output format. Output formats currently supported (Onnx, Mat)")
     return outputType
@@ -122,19 +140,21 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
         printer=sherlockPrinter(inputPath,outputpath)
         printer.create_onnx_model()
     elif(toolName=="Tensorflow" and outputFormat=="mat"):
+        jsonFile=verify_checkpoint(jsonFile)
         printer=TensorflowPrinter(inputPath,outputpath,jsonFile)
+        printer.create_matfile()
     elif(toolName=="ONNX" and outputFormat=='mat'):
         printer=onnxPrinter(inputPath,outputpath)
         printer.create_matfile()
     elif(toolName=="Keras" and outputFormat=="mat"):
-        #check the json file
+        #check the json files
         checkNum=checkJson(jsonFile)
         printer=kerasPrinting(checkNum, inputPath, outputpath, jsonFile,"mat")
     elif(toolName=="Keras" and outputFormat=="onnx"):
         checkNum=checkJson(jsonFile)
         printer=kerasPrinting(checkNum, inputPath, outputpath, jsonFile,"onnx")
         #raise NotImplementedError("Sorry. Still developping Keras to Onnx printer.")
-    elif (toolName=="mat" and outputFormat=="tf"):
+    elif (toolName=="mat" and outputFormat=="eran"):
         printer=Tf_eran_printer(inputPath,outputpath)
     else:
         print("Internal Handling Error: ",toolName,outputFormat,inputPath,outputpath)
