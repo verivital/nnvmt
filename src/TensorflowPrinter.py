@@ -151,7 +151,7 @@ class TensorflowPrinter(NeuralNetParser):
             if inputs[i] == inputs[i+1]:
                 W[i] = np.concatenate([W[i],W.pop(i+1)],0)
                 b[i] = np.concatenate([np.array(b[i]).reshape(-1,1),np.array(b.pop(3)).reshape(-1,1)],0)
-                b[i] = b[i].T
+                #b[i] = b[i].T
                 acts.pop(i+1)
                 count+=1
             else:
