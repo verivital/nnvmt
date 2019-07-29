@@ -11,9 +11,11 @@ Neural Network Verification Model Translation Tool (NNVMT)
 from __future__ import division, print_function, unicode_literals
 import numpy as np
 import os
+import onnxmltools
 from src.NeuralNetParser import NeuralNetParser
 import scipy.io as sio
 from onnx import *
+from src.MatToKeras import create_nn, save_model 
 
 class reluplexPrinter(NeuralNetParser):
     
@@ -27,9 +29,12 @@ class reluplexPrinter(NeuralNetParser):
         
     #TO DO: need to rewrite this
     def  create_onnx_model(self):
-        model_def=self.createReluplexOnnx(self.network_weight_matrices,self.network_bias_matrices,self.layer_sizes)
-        new_model_path = os.path.join( self.outputFilePath, self.originalFilename)
-        onnx.save(model_def, new_model_path+".onnx")
+        self.construct_matfile()
+        W,b,a=self.matDict["W"],self.matDict["b"],self.matDict["act_fcns"]
+        model=create_nn(W,b,a)
+        self.final_output_path=os.path.join(self.outputFilePath, self.originalFilename)+'.onnx'
+        onnx_model = onnxmltools.convert_keras(model)
+        onnxmltools.utils.save_model(onnx_model, self.final_output_path)
         self.originalFile.close()
 
     #function to create and save matfile
@@ -70,50 +75,6 @@ class reluplexPrinter(NeuralNetParser):
             biasNames.append(biasPrefix+str((i+1)))
         return weightNames, biasNames
     
-    def createReluplexOnnx(self,W,b,layerSizes):
-        num_layers=len(W)
-        layer_name="FC"
-        input_name="X"
-        inputSize=layerSizes[0]
-        outputSize=layerSizes[len(W)]
-        output_name="Y"
-        reluOutput="R"
-        output1="O"
-        reluOperation="ReLU"
-        weightLabels, biasLabels=self.createWeightBiasLabels(W)
-        nodeList=[]
-        tensorList=[]
-        if(int(inputSize)==1):
-             tensorList.append(helper.make_tensor_value_info(input_name, TensorProto.FLOAT, [1]))
-        else:
-            tensorList.append(helper.make_tensor_value_info(input_name, TensorProto.FLOAT, [int(inputSize),1]))
-        if(outputSize==1):
-            outputList=[helper.make_tensor_value_info(output_name, TensorProto.FLOAT, [int(outputSize),1])]
-        else:
-            outputList=[helper.make_tensor_value_info(output_name, TensorProto.FLOAT, [1])]
-        for i in range(0,num_layers):
-            nodeList.append(helper.make_node(layer_name, [input_name, weightLabels[i], biasLabels[i]], [output1+str(i+1)]))
-            input_name=output1+str(i+1)
-            if(i==num_layers-1):
-                continue
-            else:
-                nodeList.append(helper.make_node(reluOperation, [input_name], [reluOutput+str(i+1)]))
-            input_name=reluOutput+str(i+1)
-        for i in range(0,num_layers):
-            weightMatrix=W[i]
-            biasMatrix=b[i]
-            if(weightMatrix.shape[0]==1 and weightMatrix.shape[1]==1):
-                tensorList.append(helper.make_tensor_value_info(weightLabels[i], TensorProto.FLOAT, [1]))
-            else:
-                tensorList.append(helper.make_tensor_value_info(weightLabels[i], TensorProto.FLOAT, [weightMatrix.shape[0],weightMatrix.shape[1]]))
-            if(biasMatrix.shape[0]==1 and biasMatrix.shape[1]==1):
-                tensorList.append(helper.make_tensor_value_info(biasLabels[i], TensorProto.FLOAT, [1]))
-            else:
-                tensorList.append(helper.make_tensor_value_info(biasLabels[i], TensorProto.FLOAT, [biasMatrix.shape[0],biasMatrix.shape[1]]))
-        graph=helper.make_graph(nodeList,"MLP",tensorList,outputList)
-        model_def = helper.make_model(graph, producer_name='Reluplex->Onnx')
-        return model_def
-
     #define helper functions for this class
     #function that skips all of the comments in the file
     def skip_comments(self,record):

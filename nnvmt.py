@@ -18,9 +18,7 @@ os.environ['KMP_WARNINGS'] = 'FALSE'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from tensorflow.python.util import deprecation
 deprecation._PRINT_DEPRECATION_WARNINGS = False
-from src.nnvmt_handlers import decideTool
-from src.nnvmt_handlers import decideOutput
-from src.nnvmt_handlers import parseHandler
+from src.nnvmt_handlers import decideTool, decideOutput, parseHandler
 
 #function that gets input format from the user
 def commandLineInterface():

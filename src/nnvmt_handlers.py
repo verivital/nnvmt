@@ -17,8 +17,7 @@ from src.kerasPrinter import kerasPrinter
 from src.TensorflowPrinter import TensorflowPrinter
 from src.onnxPrinter import onnxPrinter
 from src.tf_eran_printer import Tf_eran_printer
-from src.nnvmt_exceptions import FileExtensionError
-from src.nnvmt_exceptions import OutputFormatError
+from src.nnvmt_exceptions import FileExtensionError, OutputFormatError
 
 #function that decides which tool the model file is 
 def decideTool(name,inputPath):
@@ -153,7 +152,6 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
     elif(toolName=="Keras" and outputFormat=="onnx"):
         checkNum=checkJson(jsonFile)
         printer=kerasPrinting(checkNum, inputPath, outputpath, jsonFile,"onnx")
-        #raise NotImplementedError("Sorry. Still developping Keras to Onnx printer.")
     elif (toolName=="mat" and outputFormat=="eran"):
         printer=Tf_eran_printer(inputPath,outputpath)
     else:

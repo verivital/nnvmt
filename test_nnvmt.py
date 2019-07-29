@@ -14,12 +14,8 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-from nnvmt import parseArguments
-from nnvmt import decideTool
-from nnvmt import decideOutput
-from nnvmt import parseHandler
-from src.nnvmt_exceptions import FileExtensionError
-from src.nnvmt_exceptions import OutputFormatError
+from nnvmt import parseArguments, decideTool, decideOutput, parseHandler
+from src.nnvmt_exceptions import FileExtensionError,OutputFormatError  
 
 
 #class that implements unit tests for our tool
