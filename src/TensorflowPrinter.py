@@ -159,6 +159,12 @@ class TensorflowPrinter(NeuralNetParser):
                 count+=1
         return W,b,acts
     
+    def reshape(self,W,b):
+        if len(b[0]) != len(W[0]):
+            for i in range(len(W)):
+                W[i] = W[i].T
+        return W,b
+    
     # Save the neural network to mat file
     def save_nnmat_file(self,W,b,acts):
         nn1 = dict({'W':W,'b':b,'act_fcns':acts})
@@ -174,6 +180,7 @@ class TensorflowPrinter(NeuralNetParser):
         [W,b] = self.get_parameters(w)
         inputs = self.layer_connections(l_names,inp_con)
         [Wf,bf,actsf] = self.reorg(inputs,W,b,acts)
+        [W,b] = self.reshape(W,b)
         return self.save_nnmat_file(Wf,bf,actsf)
         
 
