@@ -129,8 +129,8 @@ class TensorflowPrinter(NeuralNetParser):
         W = [] # weights
         b = [] # bias
         for i in range(int(len(w)/2)):
-            W.append(np.float64(w[2*i].T))
-            b.append(np.float64(w[2*i+1].T))
+            W.append(np.float64(w[2*i]))
+            b.append(np.float64(w[2*i+1].reshape(-1,1)))
         return W,b,
         
     # establish the connections from layer to layer
@@ -149,9 +149,9 @@ class TensorflowPrinter(NeuralNetParser):
         count = 0
         while count < len(inputs)-1:
             if inputs[i] == inputs[i+1]:
-                W[i] = np.concatenate([W[i],W.pop(i+1)],0)
-                b[i] = np.concatenate([np.array(b[i]).reshape(-1,1),np.array(b.pop(3)).reshape(-1,1)],0)
-                b[i] = b[i].T
+                W[i] = np.concatenate([W[i],W.pop(i+1)],1)
+                b[i] = np.concatenate([np.array(b[i]).reshape(-1,1),np.array(b.pop(i+1)).reshape(-1,1)],0)
+                #b[i] = b[i].T
                 acts.pop(i+1)
                 count+=1
             else:
