@@ -47,8 +47,8 @@ NNMT can be run through a GUI. To use the GUI, after installing the above librar
 After installing the above libraries, you can run the transalator python files --help or (-h) flag to see the high-level usage:
 
 ``` 
-python nnvmt.py -h 
-usage: nnvmt.py [-h] -i INPUT -o OUTPUT -t TOOL [-f OUTPUTFORMAT] [-j JSON]
+python nnvmt.py -h
+usage: nnvmt.py [-h] -i INPUT -o OUTPUT -t TOOL [-f OUTPUTFORMAT] [-j CONFIG]
 
 Neural Network Model Translation Tool
 
@@ -62,7 +62,10 @@ optional arguments:
   -f OUTPUTFORMAT, --format OUTPUTFORMAT
                         output format to be translated to default: matfile
                         (.mat)
-  -j JSON, --json JSON  checkpoint file for Tensorflow models and optional json model for keras models
+  -j CONFIG, --json CONFIG, --ckpt CONFIG
+                        Checkpoint file for Tensorflow models or optional json
+                        model for Keras models
+
 ```
 ### Converting An Example
 ```python nnvmt.py -i original_networks/ACASXU_run2a_4_3_batch_2000.nnet -o translated_networks/ -t nnet -f mat```
