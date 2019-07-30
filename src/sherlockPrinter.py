@@ -14,6 +14,11 @@ import os
 from src.NeuralNetParser import NeuralNetParser
 from onnx import *
 import scipy.io as sio
+from src.MatToKeras import create_nn1, save_model,parse_model
+import onnxmltools
+import tensorflow as tf
+from tensorflow import keras
+from keras import models, layers
 
 class sherlockPrinter(NeuralNetParser):
     
@@ -24,6 +29,7 @@ class sherlockPrinter(NeuralNetParser):
         self.pathToOriginalFile=pathToOriginalFile
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
+        tf.reset_default_graph()
        
         
 
@@ -35,9 +41,28 @@ class sherlockPrinter(NeuralNetParser):
     #TO DO: create an onnx model using the matfiles created by create_matfile  
     def create_onnx_model(self):
         #TO DO IMPLEMENT THIS
-        model_def=self.createSherlockOnnx(self.network_weight_matrices,self.network_bias_matrices,self.info_dict['layer_sizes'])
-        new_model_path = os.path.join(self.outputFilePath, self.originalFilename)
-        onnx.save(model_def, new_model_path+".onnx")
+        W,b,info_dict=self.construct_matfile()
+        a=info_dict['act_fcns']
+        #for i in range(len(b)):
+         #   b[i]=b[i].reshape(-1,)
+        print(W[0].shape,W[1].shape,b[0].shape,b[1].shape, len(W[0].T),"B: "+str(b[1].size))
+        self.final_output_path=os.path.join(self.outputFilePath, self.originalFilename)+'.onnx'
+        model=create_nn1(W,b,a)
+        print(model.layers)
+        print(model.inputs)
+        print(model.outputs)
+        print(model.summary())
+        onnx_model = onnxmltools.convert_keras(model)
+        onnxmltools.utils.save_model(onnx_model, self.final_output_path)
+
+        """ self.create_matfile()
+        self.final_output_path=parse_model(self.final_output_path,self.outputFilePath)
+        model = models.load_model(self.final_output_path)
+        print(model.summary())
+        onnx_model = onnxmltools.convert_keras(model)
+        self.final_output_path=os.path.join(self.outputFilePath, self.originalFilename)+'.onnx'
+        onnxmltools.utils.save_model(onnx_model, self.final_output_path)
+        self.originalFile.close() """
         
 
     #function to create and save sherlock model files
@@ -64,54 +89,6 @@ class sherlockPrinter(NeuralNetParser):
         record.close()
         return network_weight_matrices, network_bias_matrices, info_dict
     
-    #function that handles the creation of a sherlock Onnx model
-    def createSherlockOnnx(self,W,b,layerSizes):
-        num_layers=len(W)
-        layer_name="FC"
-        input_name="X"
-        inputSize=layerSizes[0]
-        if(self.file_type):
-            outputSize=layerSizes[len(W)]
-        else:
-            outputSize=layerSizes[len(W)-1]
-        output_name="Y"
-        reluOutput="R"
-        output1="O"
-        reluOperation="ReLU"
-        weightLabels, biasLabels=self.createWeightBiasLabels(W)
-        nodeList=[]
-        tensorList=[]
-        if(int(inputSize)==1):
-             tensorList.append(helper.make_tensor_value_info(input_name, TensorProto.FLOAT, [1]))
-        else:
-            tensorList.append(helper.make_tensor_value_info(input_name, TensorProto.FLOAT, [int(inputSize),1]))
-        if(outputSize==1):
-            outputList=[helper.make_tensor_value_info(output_name, TensorProto.FLOAT, [1])]
-        else:
-            outputList=[helper.make_tensor_value_info(output_name, TensorProto.FLOAT, [int(outputSize),1])]
-        for i in range(0,num_layers):
-            nodeList.append(helper.make_node(layer_name, [input_name, weightLabels[i], biasLabels[i]], [output1+str(i+1)]))
-            input_name=output1+str(i+1)
-            if(i==num_layers-1):
-                nodeList.append(helper.make_node(reluOperation, [input_name], [output_name]))
-            else:
-                nodeList.append(helper.make_node(reluOperation, [input_name], [reluOutput+str(i+1)]))
-            input_name=reluOutput+str(i+1)
-        for i in range(0,num_layers):
-            weightMatrix=W[i]
-            biasMatrix=b[i]
-            if(weightMatrix.shape[0]==1 and weightMatrix.shape[1]==1):
-                tensorList.append(helper.make_tensor_value_info(weightLabels[i], TensorProto.FLOAT, [1]))
-            else:
-                tensorList.append(helper.make_tensor_value_info(weightLabels[i], TensorProto.FLOAT, [weightMatrix.shape[0],weightMatrix.shape[1]]))
-            if(biasMatrix.shape[0]==1 and biasMatrix.shape[1]==1):
-                tensorList.append(helper.make_tensor_value_info(biasLabels[i], TensorProto.FLOAT, [1]))
-            else:
-                tensorList.append(helper.make_tensor_value_info(biasLabels[i], TensorProto.FLOAT, [biasMatrix.shape[0],biasMatrix.shape[1]]))
-        graph=helper.make_graph(nodeList,"MLP",tensorList,outputList)
-        model_def = helper.make_model(graph, producer_name='Sherlock->Onnx')
-        return model_def
-
     def createWeightBiasLabels(self,W):
         weightNames=[]
         biasNames=[]

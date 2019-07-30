@@ -33,6 +33,7 @@ class onnxPrinter(NeuralNetParser):
         self.pathToOriginalFile=pathToOriginalFile
         self.originalFile=open(pathToOriginalFile,"r")
         self.outputFilePath=OutputFilePath
+        tf.reset_default_graph()
     
     #function for creating the matfile
     def create_matfile(self):
