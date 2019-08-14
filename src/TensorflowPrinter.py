@@ -20,14 +20,12 @@ import tensorflow as tf
 #abstract class for keras printers
 class TensorflowPrinter(NeuralNetParser):
     #Instantiate files and create a matfile
-    def __init__(self,pathToOriginalFile, OutputFilePath, pathToCkpt):
+    def __init__(self,pathToCkpt, OutputFilePath):
         #get the name of the file without the end extension
-        filename=os.path.basename(os.path.normpath(pathToOriginalFile))
-        filename=filename.replace('.meta','')
+        #filename=os.path.basename(os.path.normpath(pathToCkpt))
+        #filename=filename.replace('checkpoint','')
         #save the filename and path to file as a class variable
-        self.originalFilename=filename
-        self.pathToOriginalFile=pathToOriginalFile
-        self.originalFile=open(pathToOriginalFile,"r")
+        #self.originalFilename=filename
         self.outputFilePath=OutputFilePath
         self.pathToCkpt = pathToCkpt
         tf.reset_default_graph()
@@ -36,17 +34,23 @@ class TensorflowPrinter(NeuralNetParser):
 
     #function for creating the matfile
     def create_matfile(self):
-        self.final_output_path=self.parse_nn(self.pathToOriginalFile,self.pathToCkpt)
-        self.originalFile.close()
+        self.final_output_path=self.parse_nn(self.pathToCkpt)
+        #self.originalFile.close()
     #function for creating an onnx model
     def create_onnx_model(self):
         print("Sorry this is still under development")
         
     # load the parameters and models
-    def load_network(self,filename,pathckpt):
+    def load_network(self,pathckpt):
+        f = open(pathckpt,'r')
+        f = f.readline()
+        f = f.split('"')
+        b = pathckpt.replace('checkpoint','')
+        filename = b+f[1]+'.meta'
+        self.originalFilename = f[1]
         with tf.Session() as sess:
             new_saver = tf.train.import_meta_graph(filename)
-            new_saver.restore(sess, tf.train.latest_checkpoint(pathckpt))
+            new_saver.restore(sess, tf.train.latest_checkpoint(b))
             w = tf.trainable_variables() # create list of weights and biases (tf variables)
             a = []
             #v_names = []
@@ -173,8 +177,8 @@ class TensorflowPrinter(NeuralNetParser):
     #save_nnmat_file(Wf,bf,actsf)
     
     # parse the nn imported from keras as json and h5 files
-    def parse_nn(self,filename,pathckpt):
-        [w,w1] = self.load_network(filename,pathckpt)
+    def parse_nn(self,pathckpt):
+        [w,w1] = self.load_network(pathckpt)
         [lys,l_names,inp_con] = self.get_layers(w,w1)
         acts = self.check_layers(l_names,lys,inp_con)
         [W,b] = self.get_parameters(w)

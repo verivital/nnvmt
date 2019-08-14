@@ -35,9 +35,9 @@ def load_mat(input_path):
 
 def create_nn(W,b,a):
     model = models.Sequential()
-    model.add(layers.Dense(units = len(W[0]), input_dim=(len(W[0].T)), activation = a[0], weights = [W[0].T,b[0].T.reshape(-1,)]))
+    model.add(layers.Dense(units = len(W[0]), input_dim=(len(W[0].T)), activation = a[0], weights = [W[0].T,b[0].reshape(-1,)]))
     for i in range(len(b)-1):
-        model.add(layers.Dense(b[i+1].size, activation = a[i+1], weights = [W[i+1].T,b[i+1].T.reshape(-1,)]))
+        model.add(layers.Dense(b[i+1].size, activation = a[i+1], weights = [W[i+1].T,b[i+1].reshape(-1,)]))
         
     return model
 def create_nn1(W,b,a):

@@ -34,7 +34,7 @@ def commandLineInterface():
     #add argument for the format you want the input file to be translated into
     ap.add_argument("-f","--format", help='output format to be translated to default: matfile (.mat)',dest="outputFormat",default="mat")
     #add optional argument for Keras json files
-    ap.add_argument("-j","--json","--ckpt", help='Checkpoint file for Tensorflow models or optional json model for Keras models',dest="config",default=None)
+    ap.add_argument("-j","--json", help='Optional json model for Keras models',dest="config",default=None)
     #parses the arguments and stores them in a dictionary
     args=vars(ap.parse_args())
     return args

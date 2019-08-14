@@ -43,7 +43,7 @@ def decideTool(name,inputPath):
             raise FileExtensionError("Error: Unrecognized Keras format. Expected filename extension is .h5")
     elif name =="Tensorflow" or name == "tensorflow":
         #check to see if the files provided are correct
-        if('.meta' in basename):
+        if('checkpoint' in basename):
             fileType="Tensorflow"
         else:
             raise FileExtensionError("Error: Unrecognized Tensorflow format. Expected filename extension is .meta")
@@ -64,20 +64,20 @@ def decideTool(name,inputPath):
 
 
 #function that makes sure tensorflow comes with checkpoint file
-def verify_checkpoint(filepath):
-    if not filepath:
-        raise NameError("Error: Please provide the path to the checkpoint file for the tensorflow model you are attempting to load.")
-    else:
-        basename=os.path.basename(filepath)
-        if basename=="checkpoint":
-            truepath=filepath.replace(basename,"")
-        else:
-            truepath=filepath
-    listed_directory=os.listdir(truepath)
-    if "checkpoint" not in listed_directory:
-        raise NameError("Error: Please provide the path to the checkpoint file for the tensorflow model you are attempting to load.")
-    else: 
-        return truepath
+#def verify_checkpoint(filepath):
+#    if not filepath:
+#        raise NameError("Error: Please provide the path to the checkpoint file for the tensorflow model you are attempting to load.")
+#    else:
+#        basename=os.path.basename(filepath)
+#        if basename=="checkpoint":
+#            truepath=filepath.replace(basename,"")
+#        else:
+#            truepath=filepath
+#    listed_directory=os.listdir(truepath)
+#    if "checkpoint" not in listed_directory:
+#        raise NameError("Error: Please provide the path to the checkpoint file for the tensorflow model you are attempting to load.")
+#    else: 
+#        return truepath
 
 
 
@@ -139,8 +139,8 @@ def parseHandler(toolName,outputFormat, inputPath, outputpath,jsonFile):
         printer=sherlockPrinter(inputPath,outputpath)
         printer.create_onnx_model()
     elif(toolName=="Tensorflow" and outputFormat=="mat"):
-        jsonFile=verify_checkpoint(jsonFile)
-        printer=TensorflowPrinter(inputPath,outputpath,jsonFile)
+#        jsonFile=verify_checkpoint(jsonFile)
+        printer=TensorflowPrinter(inputPath,outputpath)
         printer.create_matfile()
     elif(toolName=="ONNX" and outputFormat=='mat'):
         printer=onnxPrinter(inputPath,outputpath)
