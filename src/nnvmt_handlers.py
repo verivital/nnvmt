@@ -43,10 +43,11 @@ def decideTool(name,inputPath):
             raise FileExtensionError("Error: Unrecognized Keras format. Expected filename extension is .h5")
     elif name =="Tensorflow" or name == "tensorflow":
         #check to see if the files provided are correct
-        if('checkpoint' in basename):
+        #print(basename)
+        if('heckpoin' in basename):
             fileType="Tensorflow"
         else:
-            raise FileExtensionError("Error: Unrecognized Tensorflow format. Expected filename extension is .meta")
+            raise FileExtensionError("Error: Unrecognized Tensorflow format. Expected filename to be 'checkpoint'")
     elif name == 'ONNX' or name == 'onnx':
         #check to see if the provided files are correct
         if ('.onnx' in basename):
