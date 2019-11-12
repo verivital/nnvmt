@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Nov  1 19:45:28 2018
+Neural Network Verification Model Translation Tool (NNVMT)
 
-@author: Musau
+@author: 
+  Patrick Musau(patrick.musau@vanderbilt.edu) 
+  Diego Manzanas Lopez (diego.manzanas.lopez@vanderbilt.edu)
 """
 
 import tkinter as tk
