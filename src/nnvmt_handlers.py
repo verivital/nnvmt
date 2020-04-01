@@ -37,7 +37,7 @@ def decideTool(name,inputPath):
             raise FileExtensionError("Error: Unrecognized Sherlock format. Expected filename extension .txt or nothing")
     elif name=="Keras" or name=="keras":
         #check to see if the files provided are correct
-        if('.h5' in basename):
+        if('.h5' in basename or '.hdf5' in basename):
             fileType="Keras"
         else:
             raise FileExtensionError("Error: Unrecognized Keras format. Expected filename extension is .h5")

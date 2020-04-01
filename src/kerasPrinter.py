@@ -21,6 +21,7 @@ if type(tf.contrib) != type(tf): tf.contrib._warning = None
 import h5py as h5
 import json
 from pprint import pprint
+from tensorflow.keras.models import load_model as loadmodel
 import keras
 from keras import models
 from keras.initializers import glorot_uniform, glorot_normal
@@ -38,6 +39,7 @@ class kerasPrinter(NeuralNetParser):
         #get the name of the file without the end extension
         filename=os.path.basename(os.path.normpath(pathToOriginalFile))
         filename=filename.replace('.h5','')
+        filename=filename.replace('.hdf5','')
         #save the filename and path to file as a class variable
         self.originalFilename=filename
         self.pathToOriginalFile=pathToOriginalFile
@@ -199,7 +201,17 @@ class kerasPrinter(NeuralNetParser):
         return self.save_nnmat_file(model,ni,no,nls,n,lsize,W,b,lys,lfs)
         
     def parse_nn_wout_json(self, modelfile):
-        model = models.load_model(modelfile)
+        with CustomObjectScope({'GlorotUniform': glorot_uniform()}):
+            with CustomObjectScope({'GlorotNormal': glorot_normal()}):
+                try:
+                    model = models.load_model(modelfile)
+                except:
+                    pass
+                try: 
+                    model = loadmodel(modelfile)
+                except:
+                    print('We cannot load the model, make sure the keras file was saved in a supported version')
+                    print(err)
         [nl,ni,no] = self.get_shape(model)
         [lys,lfs] = self.get_layers(model,nl)
         #lfs = self.fix_activations(lys,lfs)
