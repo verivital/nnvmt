@@ -60,7 +60,8 @@ class reluplexPrinter(NeuralNetParser):
         adict,self.network_weight_matrices, self.network_bias_matrices=self.create_matdict(NN_matrix,numberOfLayers)
         adict1=adict
         #adict1["layer_sizes"]=self.layer_sizes
-        adict1["act_fcns"]=["relu"]*numberOfLayers
+        adict1["act_fcns"]=["relu"]*numberOfLayers-1
+        adict1["act_fcns"].append('linear')
         self.matDict=adict1
         
         
