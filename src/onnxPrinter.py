@@ -81,7 +81,9 @@ class onnxPrinter(NeuralNetParser):
                 act_fcns.append('tanh')
             elif 'igmoid' in tensor_list[i][1].op.name:
                 act_fcns.append('sigmoid')
-        return W,b,act_fcns
+            elif 'oftmax' in tensor_list[i][1].op.name:
+                act_fcns.append('softmax')
+        return W,b,act_fcns 
     
     def reshape(self,W,b):
         if len(b[0]) != len(W[0]):
