@@ -98,6 +98,16 @@ class onnxPrinter(NeuralNetParser):
                 W[i] = W[i].T
         return W,b
 
+	def check_input(self,W):
+	    ws = W[0].shape
+	    print(ws)
+	    if len(ws) == 4:
+		if ws[1] == 1 and ws[2] == 1:
+		    W[0] = W[0].reshape(ws[0],ws[3],ws[1],ws[2])
+		elif ws[1] == 1 and ws[3] == 1:
+		    W[0] = W[0].reshape(ws[0],ws[2],ws[1],ws[3])
+	    return W
+
     
     # Save the nn information in a mat file
     def save_nn_mat_file(self,W,b,lfs,output_path):
@@ -110,4 +120,5 @@ class onnxPrinter(NeuralNetParser):
         [tensor_dict,tensor_list] = self.inform(model)
         [W,b,lfs] = self.parameters(tensor_dict,tensor_list,model)
         [W,b] = self.reshape(W,b)
+	[W] = self.check_input(W)
         self.save_nn_mat_file(W,b,lfs,output_path)
