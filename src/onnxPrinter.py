@@ -84,7 +84,7 @@ class onnxPrinter(NeuralNetParser):
             elif 'oftmax' in tensor_list[i][1].op.name:
                 act_fcns.append('softmax')
             elif 'add' in tensor_list[i][1].op.name:
-                if 'Const' in tensor_list[i+1][1].op.name:
+                if (not 'anh' in tensor_list[i+1][1].op.name) and (not 'elu' in tensor_list[i+1][1].op.name) and (not 'oftmax' in tensor_list[i+1][1].op.name) and not 'igmoid' in tensor_list[i+1][1].op.name:
                     act_fcns.append('linear')
         return W,b,act_fcns 
     
