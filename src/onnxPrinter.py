@@ -69,9 +69,9 @@ class onnxPrinter(NeuralNetParser):
         act_fcns = []
         # After creating session, we will get the weights, activation layers and bias
         for i in range(len(tensor_dict)):
-            if 'W' in tensor_list[i][0]:
+            if 'W' in tensor_list[i][0] or 'weight' in tensor_list[i][0]:
                 W.append(np.float64(sess.run(tensor_dict[tensor_list[i][0]])))
-            elif 'B' in tensor_list[i][0]:
+            elif 'B' in tensor_list[i][0] or 'bias' in tensor_list[i][0]:
                 b.append(np.float64(sess.run(tensor_dict[tensor_list[i][0]])).reshape(-1,1))
             elif 'elu' in tensor_list[i][1].op.name:
                 act_fcns.append('relu')
@@ -83,6 +83,9 @@ class onnxPrinter(NeuralNetParser):
                 act_fcns.append('sigmoid')
             elif 'oftmax' in tensor_list[i][1].op.name:
                 act_fcns.append('softmax')
+            elif 'add' in tensor_list[i][1].op.name:
+                if 'Const' in tensor_list[i+1][1].op.name:
+                    act_fcns.append('linear')
         return W,b,act_fcns 
     
     def reshape(self,W,b):
