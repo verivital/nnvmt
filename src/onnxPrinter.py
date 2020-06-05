@@ -98,14 +98,14 @@ class onnxPrinter(NeuralNetParser):
                 W[i] = W[i].T
         return W,b
 
-	def check_input(self,W):
+    def check_input(self,W):
 	    ws = W[0].shape
 	    print(ws)
 	    if len(ws) == 4:
-		if ws[1] == 1 and ws[2] == 1:
-		    W[0] = W[0].reshape(ws[0],ws[3],ws[1],ws[2])
-		elif ws[1] == 1 and ws[3] == 1:
-		    W[0] = W[0].reshape(ws[0],ws[2],ws[1],ws[3])
+		    if ws[1] == 1 and ws[2] == 1:
+		        W[0] = W[0].reshape(ws[0],ws[3],ws[1],ws[2])
+		    elif ws[1] == 1 and ws[3] == 1:
+		        W[0] = W[0].reshape(ws[0],ws[2],ws[1],ws[3])
 	    return W
 
     
