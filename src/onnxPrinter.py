@@ -120,5 +120,5 @@ class onnxPrinter(NeuralNetParser):
         [tensor_dict,tensor_list] = self.inform(model)
         [W,b,lfs] = self.parameters(tensor_dict,tensor_list,model)
         [W,b] = self.reshape(W,b)
-	[W] = self.check_input(W)
+        [W] = self.check_input(W)
         self.save_nn_mat_file(W,b,lfs,output_path)
